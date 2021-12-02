@@ -1,6 +1,6 @@
 import { FunctionalComponent } from 'preact';
 // import { BrowserRouter, Route, Routes } from 'react-router-dom';
-import { CSSTransition, TransitionGroup } from "preact-transitioning"
+// import { CSSTransition, TransitionGroup } from "preact-transitioning"
 // import { Helmet } from 'react-helmet';
 // import BoutMe from './AboutMe';
 // import ContactMe from './contact';
@@ -35,12 +35,13 @@ export type traits = "Funny" |
                 "Creepiness"
 
 export type looks = "Face" |
-             "Fashion" |
-             "Muscular" |
-             "HairCoolness" |
-             "Figure" |
-             "Height" |
-             "Eyes"
+                    "Fashion" |
+                    "Muscular" |
+                    "HairCoolness" |
+                    "Figure" |
+                    "Height" |
+                    "Eyes" |
+                    "Smell"
 
 export type Num<K extends string> = Record<K, number>
 
@@ -116,18 +117,61 @@ const curPr = {
             StreetSmart: 70,
         }
     },
-    weights: {}
+    weights: {
+        looks: {
+            Eyes: 0.15,
+            Face: 0.15,
+            Fashion: 0.15,
+            Figure: 0.15,
+            HairCoolness: 0.15,
+            Height: 0.15,
+            Muscular: 0.1,
+            Smell: 0.1
+        },
+        personality: {
+            FT: 0.25,
+            IO: 0.25,
+            JP: 0.25,
+            SI: 0.25,
+        },
+        major: {
+            bdsm: 0.1,
+            looks: 0.15,
+            personality: 0.2,
+            politics: 0.05,
+            toptype: 0.3,
+            traits: 0.2
+        },
+        traits: {
+            Annoyingness: 0.1,
+            BookSmart: 0.1,
+            Creepiness: 0.1,
+            Cute: 0.1,
+            Edge: 0.1,
+            Ego: 0.1,
+            Funny: 0.1,
+            Kind: 0.1,
+            Maturity: 0.1,
+            OpenMinded: 0.1,
+            Rich: 0.1,
+            Selfishness: 0.1,
+            StreetSmart: 0.1,
+            Temper: 0.1
+        },
+    }
 } as profile
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export type quest<O extends string = any> = {
     question: string,
     ignoreIf: (profile: profile) => boolean,
+    default: (profile:profile) => Num<O>
 } & ({
     answerType: "input",
     filter: (str: string) => boolean,
     a: string,
-    parse: (inp: string, prof: profile) => profile
+    parse: (inp: string, prof: profile) => profile,
+    options: Record<string, never>
 } | {
     answerType: "pie",
     options: Record<O, string> | ((profile:profile) => Record<O, string>),
@@ -138,8 +182,7 @@ export type quest<O extends string = any> = {
     parse: (inp: Num<O>, prof: profile) => profile
 } | {
     answerType: "rateGraph",
-    x: string,
-    y: string,
+    options: {x: string, y: string}
     parse: (inp: [number, number], prof: profile) => profile
 } | {
     answerType: "checkboxes",
@@ -162,12 +205,14 @@ const questions:quest[] = [{
             HairCoolness: "Hair Coolness",
             Figure: "Figure",
             Height: "Height",
-            Eyes: "Pretty Eyes"
+            Eyes: "Pretty Eyes",
+            Smell: "Smell"
         },
         parse: (inp, prof) => {
             prof.weights.looks = inp
             return prof
-        }
+        },
+        default: (prof) => prof.weights.looks
     } as quest<looks>,
     {
         question: "How much do you care about these categories?",
@@ -179,7 +224,6 @@ const questions:quest[] = [{
             Creepiness: "Creepiness",
             Edge: "Edgyness",
             Ego: "Ego",
-            Intelligence: "Intelligence",
             Kind: "Kindness",
             Maturity: "Maturity",
             OpenMinded: "Open Mindness",
@@ -193,7 +237,8 @@ const questions:quest[] = [{
         parse: (inp, prof) => {
             prof.weights.traits = inp
             return prof
-        }
+        },
+        default: (prof) => prof.weights.traits
     } as quest<traits>,
     {
         question: "How much do you care about these categories?",
@@ -208,7 +253,8 @@ const questions:quest[] = [{
         parse: (inp, prof) => {
             prof.weights.personality = inp
             return prof
-        }
+        },
+        default: (prof) => prof.weights.personality
     } as quest<personality>,
     {
         question: "How much do you care about these categories?",
@@ -225,7 +271,8 @@ const questions:quest[] = [{
         parse: (inp, prof) => {
             prof.weights.major = inp
             return prof
-        }
+        },
+        default: (prof) => prof.weights.major
     } as quest<keyof profile['weights']['major']>,
     {
         question: "Do this personality test, and put the link you get to below",
@@ -236,7 +283,9 @@ const questions:quest[] = [{
         parse: (inp, prof) => {
             prof.data.personalityTest = inp
             return prof
-        }
+        },
+        options: {},
+        default: () => ({})
     },
     {
         question: "Do the political compass test, and post the final link below",
@@ -247,7 +296,9 @@ const questions:quest[] = [{
         parse: (inp, prof) => {
             prof.data.political = inp
             return prof
-        }
+        },
+        options: {},
+        default: () => ({})
     },
     {
         question: "What do you prefer in your partner?",
@@ -271,7 +322,8 @@ const questions:quest[] = [{
         parse: (inp, profile) => {
             profile.pref.personality = Object.assign(profile.pref.personality, inp)
             return profile
-        }
+        },
+        default: (prof) => prof.pref.personality
     } as quest<personality>,
     {
         question: "What do you prefer in your partner?",
@@ -302,7 +354,8 @@ const questions:quest[] = [{
         ignoreIf: (profile) => profile.weights.major.traits == 0,
         parse: (inp, prof) => {
             prof.pref.traits = Object.assign(prof.pref.traits, inp)
-        }
+        },
+        default: (prof) => prof.pref.traits
     } as quest<traits>,
     {
         question: "How tall do you want your partner to be (cm)",
@@ -313,7 +366,9 @@ const questions:quest[] = [{
         parse: (inp, prof) => {
             prof.pref.looks.Height = parseInt(inp, 0)
             return prof
-        }
+        },
+        options: {},
+        default: () => ({})
     },
     {
         question: "What figure do you want in your partner?",
@@ -324,18 +379,22 @@ const questions:quest[] = [{
         ignoreIf: (profile) => profile.weights.looks.Figure == 0,
         parse: (inp, prof) => {
             prof.pref.looks.Figure = inp.Figure
-        }
+        },
+        default: (prof) => ({Figure: prof.pref.looks.Figure})
     } as quest<"Figure">,
     {
         question: "Where on the political compass is your dream partner?",
         answerType: "rateGraph",
-        x: "Economical Scale",
-        y: "Social Scale",
+        options: {
+            x: "Economical Scale",
+            y: "Social Scale",
+        },
         ignoreIf: (profile) => profile.weights.major.politics == 0,
         parse: (inp, prof) => {
             prof.pref.pol = inp
             return prof
-        }
+        },
+        default: () => ({x: 0, y: 0})
     },
     {
         question: "Which genders are you into?",
@@ -350,7 +409,8 @@ const questions:quest[] = [{
         parse: (inp, prof) => {
             prof.metas.orientation = inp
             return prof
-        }
+        },
+        default: () => ({Female: 0, Fluid: 0, Other: 0, Male: 0})
     } as quest<"Male" | "Female" | "Fluid" | "Other">,
     {
         question: "Are you a Top, Bottom or Versatile (switch, essentially)?",
@@ -364,7 +424,8 @@ const questions:quest[] = [{
         parse: (inp, prof) => {
             prof.metas.top = inp == "Top" ? 0 : inp == 'Bottom' ? 1 : 2
             return prof
-        }
+        },
+        default: () => ({Top: 0, Bottom: 0, Versatile: 0}) //TODO:
     } as quest<"Top" | "Bottom" | "Versatile">
 ]
 
@@ -394,7 +455,7 @@ const App: FunctionalComponent = () => {
         <div class="container">
             {/* <TransitionGroup>
                 <CSSTransition exit={true} in={true} enter={true} appear={false} duration={1300} classNames="pageFromTop"> */}
-                    <Question first={i == 0} last={i==(questions.length-1)} question={questions[i]} profile={curProfile} setProfile={SetCurProfile} changeQ={(up) => {changeQ(i + 1*(up ? 1 : -1), up)}} />
+                    <Question first={i == 0} last={i==(questions.length-1)} question={questions[i]} profile={curProfile} setProfile={SetCurProfile} changeQ={(up) => {changeQ(i + 1*(up ? 1 : -1), up); console.log("Yaya????")}} />
                 {/* </CSSTransition>
             </TransitionGroup> */}
         </div>

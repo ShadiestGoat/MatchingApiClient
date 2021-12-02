@@ -2,6 +2,7 @@ import { FunctionComponent, Fragment } from "preact";
 import { useCallback, useMemo, useRef, useEffect, useState } from "preact/hooks";
 import { useGlobalListener } from "../../tools";
 import { profile, quest } from "../app";
+import style from "./style.css"
 
 type data2 = {
     /** 0-1 */
@@ -21,8 +22,9 @@ const TOT = Math.PI * 2
 const BeginRenderAt = 7*Math.PI/4
 
 const NewGraph:FunctionComponent<{
-    dataInit: Record<string, number>
-}> = ({ dataInit }) => {
+    dataInit: Record<string, number>,
+    inp: (data:Record<string, unknown>) => void
+}> = ({ dataInit, inp }) => {
     const cnvsRef = useRef<HTMLCanvasElement>(null)
     const [target, setTarget] = useState<{i: number} | false>(false)
     const [hoverTarget, setHoverTarget] = useState<number>(-1)
@@ -30,10 +32,11 @@ const NewGraph:FunctionComponent<{
     const normalizeAngle = useCallback((angle:number):number => {
         if (angle < 0) return TOT + angle
         if (angle >= TOT) return normalizeAngle(angle - TOT)
-        return angle
+        return Math.round(angle*1000)/1000
     }, [])
 
-    const [data, setData] = useState<data2[]>(useMemo(():data2[] => {
+
+    const [data, setDat] = useState<data2[]>(useMemo(():data2[] => {
         let curAngle = BeginRenderAt
         const total = Object.values(dataInit).reduce((a, b) => a+b)
         return Object.keys(dataInit).sort((a, b) => dataInit[a] - dataInit[b]).map((v, i) => {
@@ -50,6 +53,13 @@ const NewGraph:FunctionComponent<{
             return ret
         })
     }, [dataInit, normalizeAngle]))
+
+
+    const setData = useCallback((input: data2[]) => {
+        inp(Object.fromEntries(input.map((v) => ([v.label, v.percent]))))
+        // @ts-ignore
+        setDat(input)
+    }, [])
 
     const getMetaInfo = useCallback((): {
         cX: number,
@@ -107,7 +117,7 @@ const NewGraph:FunctionComponent<{
             ctx.closePath()
             ctx.stroke()
 
-            const fontSize = ~~(ctx.canvas.height/25)
+            const fontSize = ~~(ctx.canvas.height/30)
             const dx = gR - fontSize;
             const dy = cY / 10;
             ctx.rotate(angle);
@@ -212,7 +222,6 @@ const NewGraph:FunctionComponent<{
         } else {
             const tooClose = 0.1
             newData[trgt].angle = newAngle
-            console.log(newAngle)
             // this feels wrong to me
             const betweem = previousSegment.angle > nextSegment.angle ?
                 !(previousSegment.angle < newAngle || newAngle < nextSegment.angle)
@@ -275,21 +284,6 @@ const NewGraph:FunctionComponent<{
     })
     useGlobalListener('mouseup', touchEnd)
 
-    const drawAtAngle = useCallback((angle:number) => {
-        const ctx = cnvsRef.current?.getContext('2d')
-        if (!ctx) return
-        const { cX, cY, gR } = getMetaInfo()
-
-        ctx.fillStyle = '#ffffff';
-        ctx.strokeStyle = '#ffffff'
-        ctx.beginPath();
-        ctx.arc(Math.cos(angle) * gR + cX, Math.sin(angle) * gR + cY, 6, 0, TOT, false);
-        ctx.closePath()
-        ctx.fill();
-        ctx.stroke();
-
-    }, [getMetaInfo])
-
     /**
      * @param i - Number
      *
@@ -297,118 +291,94 @@ const NewGraph:FunctionComponent<{
      */
     const shiftAngleByPercent = useCallback((i:number, newPercent: number) => {
         if (newPercent == data[i].percent) return
-        const newAngle = normalizeAngle(data[i].angle - newPercent*TOT)
+
+
+        const normalVisble = data.filter(k => !k.collapsed || k.i == i)
+        const mapVisible = Object.fromEntries(normalVisble.map((v, i2) => [v.i, i2]))
+
+        const newAngle = normalizeAngle((data[i].collapsed ? -[...normalVisble, ...normalVisble, ...normalVisble][mapVisible[i] - 1].angle : data[i].angle) - (newPercent-data[i].percent)*TOT)
         const newData = JSON.parse(JSON.stringify(data)) as data2[]
-
-        let normalVisble = data.filter(k => !k.collapsed || k.i == i)
-        let visible = [...normalVisble, ...normalVisble, ...normalVisble]
         /** data index : visible index */
-        let visibleMp = Object.fromEntries(normalVisble.map((v, i2) => [v.i, i2 + normalVisble.length])) as Record<number, number>
 
-        let nextSegment = visible[visibleMp[i] + 1]
-        let previousSegment = visible[visibleMp[i] - 1]
+        // function generateVisible() {
+        //     if (i === null) return
+        //     normalVisble = newData.filter(k => !k.collapsed || k.i == i)
+        //     mapVisible = Object.fromEntries(normalVisble.map((v, i2) => [v.i, i2]))
+        // }
 
-        let nextAngle = normalizeAngle(nextSegment.angle - newAngle)
-        let prevAngle = normalizeAngle(newAngle - previousSegment.angle)
-
-        function generateVisible() {
-            if (i === null) return
-            normalVisble = newData.filter(k => !k.collapsed || k.i == i)
-            console.log(newData)
-            visible = [...normalVisble, ...normalVisble, ...normalVisble]
-            /** data index : visible index */
-            visibleMp = Object.fromEntries(normalVisble.map((v, i2) => [v.i, i2 + normalVisble.length])) as Record<number, number>
-            console.log(normalVisble)
-            console.log(visibleMp, i)
-            nextSegment = visible[visibleMp[i] + 1]
-            previousSegment = visible[visibleMp[i] - 1]
-
-            if (newData[i].collapsed) {
-                nextAngle = 0
-                prevAngle = normalizeAngle(nextSegment.angle - previousSegment.angle)
-            } else {
-                nextAngle = normalizeAngle(nextSegment.angle - newAngle)
-                prevAngle = normalizeAngle(newAngle - previousSegment.angle)
-            }
+        if (newData[i].collapsed) {
+            [...normalVisble, ...normalVisble, ...normalVisble][mapVisible[i] + 1]
         }
 
-        drawAtAngle(newAngle)
-
-
         if (normalVisble.length == 1) {
-            newData[i].angle = newAngle
-            newData[i].percent = 1
+                newData[i].angle = newAngle
+                newData[i].percent = 1
         } else {
             newData[i].angle = newAngle
             newData[i].percent = newPercent
             if (newData[i].collapsed) newData[i].collapsed = false
 
-            // this feels wrong to me
-            // TODO: if it interacts w/ another one, it fucking consumes it
             let percentLeft = Math.abs(data[i].percent - newPercent)
 
             const direction = data[i].percent > newPercent ? 1 : -1
-
-            // console.log([  ...newData.filter(({collapsed}, i2) => i2 < i && !collapsed),
-            //     ...newData.filter(({collapsed}, i2) => i2 > i && !collapsed)]
-            // .reverse())
 
             ;[  ...newData.filter(({collapsed}, i2) => i2 < i && !collapsed),
                 ...newData.filter(({collapsed}, i2) => i2 > i && !collapsed)]
             .reverse().forEach((v) => {
                 if (percentLeft == 0) return
-                // console.log(v.i, Math.floor(v.percent*10000)/100, Math.floor(percentLeft*10000)/100)
-                if (v.percent <= percentLeft) {
+                if (v.percent <= percentLeft && direction == -1) {
                     v.collapsed = true
-                    v.collapsedAt = newAngle //TODO: move ever other collapsed at in case of un collapsing! (in case of i)
+                    v.collapsedAt = newAngle
                     percentLeft -= v.percent
                     v.percent = 0
                 } else {
-                    // End
-                    console.log("Left B:", percentLeft)
-                    console.log("%    B:", v.percent)
                     v.percent += percentLeft * direction
                     percentLeft = 0
-                    console.log("Left A:", percentLeft)
-                    console.log("%    A:", v.percent)
-                    console.log('-------------------------')
-                    v.angle += percentLeft * direction * TOT
                 }
 
                 newData[v.i] = v
             })
-
-            generateVisible()
-
-            // if (newData.filter((k) => !k.collapsed).length == 1) {
-            //     newData[i].percent = 1
-            // } else {
-            //     newData[i].percent = nextAngle/TOT
-            //     // newData[previousSegment.i].percent = prevAngle/TOT
-            // }
+            // generateVisible()
         }
+
         setData(newData)
         setTarget(false)
-    }, [data, normalizeAngle, drawAtAngle])
+    }, [data, normalizeAngle])
 
     return <div class="row" style={{height: "55vh", width: "100vw", marginTop: "3vh"}}>
-    <div class="col" style={{width: "21.5%"}}>
-        {
-            data.map((v, i) => {
-                return <div key={v.label} class="row">
-                    <h2 class="col" style={{width: "50%"}}>{v.label}</h2>
-                    <input class="col" style={{width: "50%"}} value={`${Math.floor(v.percent * 10000)/100}`} onChange={(e) => {
-                        const targ = e.target as HTMLInputElement
-                        shiftAngleByPercent(i, parseFloat(targ.value) <= 0 ? 0 : parseFloat(targ.value) >= 100 ? 1 : Math.floor(parseFloat(targ.value)*100)/10000)
-                    }} />
-                </div>
-            })
-        }
+        <div class="col" style={{width: "21.5%"}}>
+            {
+                data.map((v, i) => {
+                    if ((i%2) == 0) return
+                    return <label key={v.label} class="row">
+                        <div class="col" style={{alignItems: "center", marginTop: "5%"}}>
+                            <h2 class="row" style={{width: "100%"}}>{v.label}</h2>
+                            <input class={`row ${style.input}`} style={{width: "70%"}} value={`${Math.round(v.percent * 10000)/100}`} onChange={(e) => {
+                                const targ = e.target as HTMLInputElement
+                                shiftAngleByPercent(v.i, parseFloat(targ.value) <= 0 ? 0 : parseFloat(targ.value) >= 100 ? 1 : Math.round(parseFloat(targ.value)*100)/10000)
+                            }} />
+                        </div>
+                    </label>
+                })
+            }
         </div>
         <canvas class="col"
         height={window.innerWidth/100 * 26} width={window.innerWidth/100 * 26} ref={cnvsRef} />
     <div class="col" style={{width: "21.5%"}}>
-        .
+            {
+                data.map((v, i) => {
+                    if ((i%2) != 0) return
+                    return <label key={v.label} class="row">
+                        <div class="col" style={{alignItems: "center", marginTop: "5%"}}>
+                            <h2 class="row" style={{width: "100%"}}>{v.label}</h2>
+                            <input class={`row ${style.input}`} style={{width: "70%"}} value={`${Math.round(v.percent * 10000)/100}`} onChange={(e) => {
+                                const targ = e.target as HTMLInputElement
+                                shiftAngleByPercent(v.i, parseFloat(targ.value) <= 0 ? 0 : parseFloat(targ.value) >= 100 ? 1 : Math.round(parseFloat(targ.value)*100)/10000)
+                            }} />
+                        </div>
+                    </label>
+                })
+            }
     </div>
     </div>
 }
@@ -422,37 +392,44 @@ const Question:FunctionComponent<{
     last: boolean,
 }> = (({ profile, question, setProfile, first, last, changeQ }) => {
 
-    // const [contentS, setContentS] = useState<string>("")
-    // const [content, setContent] = useState<Record<string, unknown>>({})
+    const [input, setInput] = useState<unknown>(question.default(profile))
+
+    const aliases = typeof question.options == "function" ? question.options(profile) : question.options
+    // @ts-ignore
+    const reverseAliases = Object.fromEntries(Object.keys(aliases).map((v) => [aliases[v], v]))
+    const defaults = question.default(profile)
 
     const chang = useCallback((up:boolean) => {
         if (up && last) return
         if (!up && first) return
-        setProfile(question.parse("", profile))
+        console.log("AOKL")
         changeQ(up)
-    }, [changeQ, setProfile, last, first, profile, question])
+    }, [changeQ, last, first])
 
     useGlobalListener('keydown', (e) => {
         if (e.key == 'ArrowLeft') chang(false)
         else if (e.key == 'ArrowRight') chang(true)
     })
 
-    let inp = <Fragment />
-    switch(question.answerType) {
-        case "pie":
-            inp = <NewGraph dataInit={{
-                One: 0.25,
-                Two: 0.125,
-                Threek: 2,
-                Four: 0.5
-            }} />
+    const info = useMemo(() => {
+        console.log(profile)
+        return Object.fromEntries(Object.keys(aliases).map((v) => {
+            // @ts-ignore
+            console.log([aliases[v], defaults[v]])
+            // @ts-ignore
+            return [aliases[v], defaults[v]]
+        }))
+    }, [profile, aliases, defaults])
 
-            break
-    }
+    console.log(info)
 
     return <Fragment>
         <h1 class="row" style={{marginTop: "10vh"}}>{question.question}</h1>
-        {inp}
+        {question.answerType == "pie" ? <NewGraph inp={(inp) => {
+        setProfile(question.parse(Object.fromEntries(Object.keys(inp).map(v => (
+            [reverseAliases[v], Math.round((inp[v] as number)*100)/100]
+        ))), profile))
+        }} dataInit={info} /> : <Fragment />}
         <div class="row" style={{marginTop: "5vh", width: "62vw", justifyContent: "space-between"}}>
             <button disabled={first} onClick={() => chang(false)} className="col btn btn-p"> Back </button>
             <button disabled={last} onClick={() => chang(true)} className="col btn btn-p"> Next </button>
