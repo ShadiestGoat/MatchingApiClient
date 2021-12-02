@@ -1,5 +1,5 @@
 import { FunctionComponent, Fragment } from "preact";
-import { useCallback, useMemo, useRef, useEffect, useState } from "preact/hooks";
+import { useCallback, useRef, useEffect, useState } from "preact/hooks";
 import { useGlobalListener } from "../../tools";
 import { profile, quest } from "../app";
 import style from "./style.css"
@@ -36,10 +36,11 @@ const NewGraph:FunctionComponent<{
     }, [])
 
 
-    const [data, setDat] = useState<data2[]>(useMemo(():data2[] => {
-        let curAngle = BeginRenderAt
-        const total = Object.values(dataInit).reduce((a, b) => a+b)
-        return Object.keys(dataInit).sort((a, b) => dataInit[a] - dataInit[b]).map((v, i) => {
+    let curAngle = BeginRenderAt
+    const total = Object.values(dataInit).reduce((a, b) => a+b)
+
+    const [data, setDat] = useState<data2[]>(
+        Object.keys(dataInit).sort((a, b) => dataInit[a] - dataInit[b]).map((v, i) => {
             const trueAngle = TOT*(dataInit[v]/total)
             const ret:data2 = {
                 angle: normalizeAngle(curAngle),
@@ -52,14 +53,14 @@ const NewGraph:FunctionComponent<{
             curAngle += trueAngle
             return ret
         })
-    }, [dataInit, normalizeAngle]))
+    )
 
 
     const setData = useCallback((input: data2[]) => {
         inp(Object.fromEntries(input.map((v) => ([v.label, v.percent]))))
         // @ts-ignore
         setDat(input)
-    }, [])
+    }, [inp])
 
     const getMetaInfo = useCallback((): {
         cX: number,
@@ -249,7 +250,7 @@ const NewGraph:FunctionComponent<{
             }
         }
         setData(newData)
-    }, [data, target, normalizeAngle])
+    }, [data, target, normalizeAngle, setData])
 
     const touchMove = useCallback((x:number, y:number) => {
         if (!target) {
@@ -343,7 +344,7 @@ const NewGraph:FunctionComponent<{
 
         setData(newData)
         setTarget(false)
-    }, [data, normalizeAngle])
+    }, [data, normalizeAngle, setData])
 
     return <div class="row" style={{height: "55vh", width: "100vw", marginTop: "3vh"}}>
         <div class="col" style={{width: "21.5%"}}>
@@ -411,15 +412,12 @@ const Question:FunctionComponent<{
         else if (e.key == 'ArrowRight') chang(true)
     })
 
-    const info = useMemo(() => {
-        console.log(profile)
-        return Object.fromEntries(Object.keys(aliases).map((v) => {
-            // @ts-ignore
-            console.log([aliases[v], defaults[v]])
-            // @ts-ignore
-            return [aliases[v], defaults[v]]
-        }))
-    }, [profile, aliases, defaults])
+    const info = Object.fromEntries(Object.keys(aliases).map((v) => {
+        // @ts-ignore
+        console.log([aliases[v], defaults[v]])
+        // @ts-ignore
+        return [aliases[v], defaults[v]]
+    }))
 
     console.log(info)
 
