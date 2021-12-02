@@ -1,0 +1,22 @@
+.pageFromTop-appear {
+    opacity: 0.4;
+    transform: rotate(-15deg) scale(0.7) translate(-60vw, -165vh);
+    /* animation: animTop 1.3s ease-in-out alternate; */
+    transition: opacity 1.3s linear, transform 1.3s ease-in-out;
+}
+
+.pageFromTop-appear-active {
+    opacity: 1;
+    transform: none;
+}
+
+.pageFromTop-exit {
+    opacity: 1;
+    transform: none;
+    transition: opacity 1.3s linear, transform 1.3s ease-in-out;
+}
+
+.pageFromTop-exit-active {
+    opacity: 0.4;
+    transform: rotate(-15deg) scale(0.7) translate(60vw, 165vh);
+}

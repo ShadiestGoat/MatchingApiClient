@@ -1,0 +1,140 @@
+:root {
+    --ico: rgb(240, 224, 234);
+    background-color: #1e1e1e;
+}
+
+.btn {
+    display: inline-block;
+    padding: 0.75rem var(--spacer-4);
+    text-align: center;
+    vertical-align: middle;
+    -moz-user-select: none;
+    -webkit-user-select: none;
+    user-select: none;
+    background-color: transparent;
+    border: 0;
+    border-radius: 12.25px;
+    transition-timing-function: ease;
+    transition-duration: 0.4s;
+    transition-property: color, background-color;
+    color: var(--ico);
+    padding: 2vh 2vw;
+    font-weight: 500 !important;
+    cursor: pointer;
+}
+
+.btn:focus {
+    outline: 0;
+}
+@media (prefers-reduced-motion: reduce) {
+    .btn {
+      transition: none;
+    }
+}
+.btn-d {
+    background-color: #d42738;
+}
+.text-danger {
+    color: #d42738 !important
+}
+.btn-d.active,
+.btn-d.show,
+.btn-d:active,
+.btn-d:hover
+{
+    background-color: #ae1c2b;
+}
+
+.btn-p {
+    background-color: #6f42c2;
+}
+
+.btn-p.active,
+.btn-p.show,
+.btn-p:active,
+.btn-p:hover {
+    background-color: #3d3d92;
+}
+
+::selection {
+    background: #3d3d92;
+}
+::-moz-selection {
+    background: #3d3d92;
+}
+
+*,
+:after,
+:before {
+    box-sizing: border-box;
+}
+
+p, h1, h2, h3, h4, h5, h6 {
+    color: var(--ico);
+    margin: 0.25vh 0 0 0;
+    margin-bottom: 0;
+    font-weight: bold;
+    text-align: center;
+    line-height: 1.4;
+}
+
+body {
+    margin: 0;
+    font-family: monospace;
+    font-size: max(1vw/1.1, 10px);
+    /* font: 500  monospace; */
+    -webkit-text-size-adjust: 100%;
+}
+h1 {
+    font-size: max(3vw, 17.5px);
+}
+
+button {
+    margin: 0;
+    font-family: inherit;
+    font-size: inherit;
+    font-weight: inherit;
+    line-height: inherit;
+    color: inherit;
+}
+
+.center {
+    margin-left: auto;
+    margin-right: auto;
+}
+
+::-webkit-scrollbar {
+    width: 0px;
+}
+
+.container {
+	height: 100vh;
+	width: 100vw;
+	overflow: hidden;
+    display: flex;
+    /* transition: transform 1.3s ease-in-out; */
+    /* justify-content: center; */
+    position: absolute;
+    flex-direction: column;
+    align-items: center;
+}
+
+.bg {
+    z-index: -99;
+}
+
+.col {
+    display: flex;
+    flex-direction: column;
+    flex: 0 0 auto;
+}
+
+.row {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+}
+
+body {
+    overflow: hidden;
+}
