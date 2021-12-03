@@ -456,7 +456,7 @@ const App: FunctionalComponent = () => {
         <div class="container">
             <TransitionGroup>
                 <CSSTransition exit={true} in={true} enter={true} appear={false} duration={1300} classNames="pageFromTop">
-                    <Question first={i == 0} last={i==(questions.length-1)} question={questions[i]} profile={curProfile} setProfile={SetCurProfile} changeQ={(up) => {changeQ(i + 1*(up ? 1 : -1), up); console.log("Yaya????")}} />
+                    <Question index={i} first={i == 0} last={i==(questions.length-1)} question={questions[i]} profile={curProfile} setProfile={SetCurProfile} changeQ={(up) => {changeQ(i + 1*(up ? 1 : -1), up); console.log("Yaya????")}} />
                 </CSSTransition>
             </TransitionGroup>
         </div>

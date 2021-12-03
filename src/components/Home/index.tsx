@@ -25,7 +25,6 @@ const NewGraph:FunctionComponent<{
     dataInit: Record<string, number>,
     inp: (data:Record<string, unknown>) => void
 }> = ({ dataInit, inp }) => {
-    console.log(dataInit)
     const cnvsRef = useRef<HTMLCanvasElement>(null)
     const [target, setTarget] = useState<{i: number} | false>(false)
     const [hoverTarget, setHoverTarget] = useState<number>(-1)
@@ -392,7 +391,8 @@ const Question:FunctionComponent<{
     setProfile: (prof: profile) => void,
     first: boolean,
     last: boolean,
-}> = (({ profile, question, setProfile, first, last, changeQ }) => {
+    index: number
+}> = (({ profile, question, setProfile, first, last, changeQ, index }) => {
 
     const aliases = typeof question.options == "function" ? question.options(profile) : question.options
     // @ts-ignore
@@ -418,15 +418,19 @@ const Question:FunctionComponent<{
         return [aliases[v], defaults[v]]
     }))
 
+    const setupInput = useCallback((inp:Record<string, unknown>) => {
+        setProfile(question.parse(Object.fromEntries(Object.keys(inp).map(v => {
+            return [reverseAliases[v], Math.round((inp[v] as number)*100)/100]
+        })), profile))
+    }, [setProfile, reverseAliases,profile, question])
+
     console.log(info)
 
     return <Fragment>
         <h1 class="row" style={{marginTop: "10vh"}}>{question.question}</h1>
-        {question.answerType == "pie" ? <NewGraph inp={(inp) => {
-        setProfile(question.parse(Object.fromEntries(Object.keys(inp).map(v => {
-            return [reverseAliases[v], Math.round((inp[v] as number)*100)/100]
-        })), profile))
-        }} dataInit={info} /> : <Fragment />}
+        {/* {question.answerType == "pie" ? */}
+        <NewGraph key={index} inp={setupInput} dataInit={info} />
+         {/* : <Fragment />} */}
         <div class="row" style={{marginTop: "5vh", width: "62vw", justifyContent: "space-between"}}>
             <button disabled={first} onClick={() => chang(false)} className="col btn btn-p"> Back </button>
             <button disabled={last} onClick={() => chang(true)} className="col btn btn-p"> Next </button>
