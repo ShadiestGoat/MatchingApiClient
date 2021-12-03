@@ -25,6 +25,7 @@ const NewGraph:FunctionComponent<{
     dataInit: Record<string, number>,
     inp: (data:Record<string, unknown>) => void
 }> = ({ dataInit, inp }) => {
+    console.log(dataInit)
     const cnvsRef = useRef<HTMLCanvasElement>(null)
     const [target, setTarget] = useState<{i: number} | false>(false)
     const [hoverTarget, setHoverTarget] = useState<number>(-1)
@@ -393,8 +394,6 @@ const Question:FunctionComponent<{
     last: boolean,
 }> = (({ profile, question, setProfile, first, last, changeQ }) => {
 
-    const [input, setInput] = useState<unknown>(question.default(profile))
-
     const aliases = typeof question.options == "function" ? question.options(profile) : question.options
     // @ts-ignore
     const reverseAliases = Object.fromEntries(Object.keys(aliases).map((v) => [aliases[v], v]))
@@ -424,9 +423,9 @@ const Question:FunctionComponent<{
     return <Fragment>
         <h1 class="row" style={{marginTop: "10vh"}}>{question.question}</h1>
         {question.answerType == "pie" ? <NewGraph inp={(inp) => {
-        setProfile(question.parse(Object.fromEntries(Object.keys(inp).map(v => (
-            [reverseAliases[v], Math.round((inp[v] as number)*100)/100]
-        ))), profile))
+        setProfile(question.parse(Object.fromEntries(Object.keys(inp).map(v => {
+            return [reverseAliases[v], Math.round((inp[v] as number)*100)/100]
+        })), profile))
         }} dataInit={info} /> : <Fragment />}
         <div class="row" style={{marginTop: "5vh", width: "62vw", justifyContent: "space-between"}}>
             <button disabled={first} onClick={() => chang(false)} className="col btn btn-p"> Back </button>

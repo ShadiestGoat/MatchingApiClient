@@ -1,4 +1,5 @@
 import { FunctionalComponent } from 'preact';
+import { CSSTransition, TransitionGroup } from 'preact-transitioning';
 // import { BrowserRouter, Route, Routes } from 'react-router-dom';
 // import { CSSTransition, TransitionGroup } from "preact-transitioning"
 // import { Helmet } from 'react-helmet';
@@ -121,10 +122,10 @@ const curPr = {
         looks: {
             Eyes: 0.15,
             Face: 0.15,
-            Fashion: 0.15,
-            Figure: 0.15,
-            HairCoolness: 0.15,
-            Height: 0.15,
+            Fashion: 0.1,
+            Figure: 0.1,
+            HairCoolness: 0.2,
+            Height: 0.1,
             Muscular: 0.1,
             Smell: 0.1
         },
@@ -195,7 +196,7 @@ export type quest<O extends string = any> = {
 })
 
 const questions:quest[] = [{
-        question: "How much do you care about these categories?",
+        question: "What makes a person attractive, split by importance?",
         answerType: "pie",
         ignoreIf: () => false,
         options: {
@@ -215,7 +216,7 @@ const questions:quest[] = [{
         default: (prof) => prof.weights.looks
     } as quest<looks>,
     {
-        question: "How much do you care about these categories?",
+        question: "What traits do you like in a person, split by importance?",
         answerType: "pie",
         options: {
             Funny: "Funniness",
@@ -241,7 +242,7 @@ const questions:quest[] = [{
         default: (prof) => prof.weights.traits
     } as quest<traits>,
     {
-        question: "How much do you care about these categories?",
+        question: "How much do you care about these personality traits?",
         answerType: "pie",
         options: {
             SI: "Sensing/Intuition",
@@ -257,10 +258,10 @@ const questions:quest[] = [{
         default: (prof) => prof.weights.personality
     } as quest<personality>,
     {
-        question: "How much do you care about these categories?",
+        question: "What makes you love a person, split by importance?",
         answerType: "pie",
         options: {
-            bdsm: "Sexual Compatability (BDSM)",
+            bdsm: "BDSM",
             looks: "Looks",
             personality: "Personality",
             politics: "Politics",
@@ -453,11 +454,11 @@ const App: FunctionalComponent = () => {
 
     return (
         <div class="container">
-            {/* <TransitionGroup>
-                <CSSTransition exit={true} in={true} enter={true} appear={false} duration={1300} classNames="pageFromTop"> */}
+            <TransitionGroup>
+                <CSSTransition exit={true} in={true} enter={true} appear={false} duration={1300} classNames="pageFromTop">
                     <Question first={i == 0} last={i==(questions.length-1)} question={questions[i]} profile={curProfile} setProfile={SetCurProfile} changeQ={(up) => {changeQ(i + 1*(up ? 1 : -1), up); console.log("Yaya????")}} />
-                {/* </CSSTransition>
-            </TransitionGroup> */}
+                </CSSTransition>
+            </TransitionGroup>
         </div>
     );
 };
