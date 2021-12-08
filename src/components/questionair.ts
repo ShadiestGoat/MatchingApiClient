@@ -2,6 +2,8 @@ import { annoying, infpRes, looks, looksFace, majorMatch, personality, profile, 
 
 type baseQuestion<T> = {
     question: string,
+    /** if present, set the heading to be a link */
+    a?: string,
     /** if true, skip the question */
     skipQuestion: (prof: profile) => boolean,
     values: (prof: profile) => T,
@@ -12,8 +14,6 @@ export type inputQuestion = {
     type: "input",
     /** if true, everything is ok! & Allow this as a result */
     filter: (str: string) => boolean
-    /** if present, set the heading to be a link */
-    a?: string
 } & baseQuestion<string>
 
 export type pieQuestion<Keys extends string> = {
@@ -192,7 +192,7 @@ export const questions:allQuestions[] = [
         content: "Let's find out a bit more about you",
     },
     {
-        question: "Do this personality test, and put the link you get to below",
+        question: "Do this personality test & paste the resulting link:",
         type: "input",
         skipQuestion: () => false,
         filter: (str) => str.trim().startsWith('https://openpsychometrics.org/tests/OEJTS/results.php?r='),
@@ -204,7 +204,7 @@ export const questions:allQuestions[] = [
         values: (prof) => prof.data.infp
     },
     {
-        question: "Do the political compass test, and post the final link below",
+        question: "Do the political compass test & paste the resulting link:",
         type: "input",
         skipQuestion: () => false,
         filter: (str) => str.trim().startsWith("https://politicalcompass.org/analysis2?ec="),
@@ -222,7 +222,7 @@ export const questions:allQuestions[] = [
             Male: "Male",
             Female: "Female",
             Fluid: "Gender Fluid",
-            NonBinary: "Non-Binary",
+            NonBinary: "Non Binary",
             None: "None",
         }),
         parse: (inp, prof) => {
@@ -269,7 +269,7 @@ export const questions:allQuestions[] = [
             Male: "Male",
             Female: "Female",
             Fluid: "Gender Fluid",
-            NonBinary: "Non-Binary",
+            NonBinary: "Non Binary",
             None: "None",
         }),
         parse: (inp, prof) => {

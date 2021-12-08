@@ -1,0 +1,13 @@
+
+.icon {
+    width: 19vh;
+    height: 19vh;
+    background-color: #1f1f1f;
+    border-radius: 25%;
+    justify-content: center;
+    align-items: center;
+    display: flex;
+    box-shadow: 0 0 20px 13px #171717;
+    transition: box-shadow 1.25s;
+    padding: 20px;
+}

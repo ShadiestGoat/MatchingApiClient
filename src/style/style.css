@@ -1,21 +1,27 @@
-.trans-appear {
-    opacity: 0.4;
-    transform: rotate(-15deg) scale(0.7) translate(-60vw, -165vh);
-    transition: opacity 1.3s linear, transform 1.3s ease-in-out;
+.swipe-left-appear {
+    transform: 0;
 }
-
-.trans-appear-active {
-    opacity: 1;
-    transform: none;
+.swipe-left-appear-active {
+    transform: translate(-150vw, 0px);
 }
-
-.trans-exit {
-    opacity: 1;
-    transform: none;
-    transition: opacity 1.3s linear, transform 1.3s ease-in-out;
+.swipe-left-appear-done {
+    transform: translate(-150vw, 0px);
 }
-
-.trans-exit-active {
-    opacity: 0.4;
-    transform: rotate(-15deg) scale(0.7) translate(60vw, 165vh);
+.swipe-left-enter {
+    transform: 0;
+}
+.swipe-left-enter-active {
+    transform: translate(-150vw, 0px);
+}
+.swipe-left-enter-done {
+    transform: translate(-150vw, 0px);
+}
+.swipe-left-exit {
+    transform: translate(-150vw, 0px);
+}
+.swipe-left-exit-active {
+    transform: 0;
+}
+.swipe-left-exit-done {
+    transform: 0;
 }

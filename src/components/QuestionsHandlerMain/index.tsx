@@ -3,20 +3,21 @@ import { useCallback } from "preact/hooks";
 import { useGlobalListener } from "../../tools";
 import { profile } from "../profile";
 import { allQuestions } from "../questionair";
+import CheckboxQuestion from "../QuestionsHandlers/CheckboxQuestion";
 import GraphQuestion from "../QuestionsHandlers/GraphQuestion";
+import InputQuestion from "../QuestionsHandlers/InputQuestion";
 import PieQuestion from "../QuestionsHandlers/PieQuestion";
+import RadialQuestion from "../QuestionsHandlers/RadialQuestion";
 import SliderQuestion from "../QuestionsHandlers/SliderQuestion";
 
-// const SliderQuestion:FunctionComponent<{
-//     dataInit: Record<string, number>,
-//     labels: Record<string, {
-//         /** % of the location */
-//         location: number,
-//         label: string
-//     }[]>,
-//     inp: (inp:Record<string, number>) => void
-// }> = ({ inp, dataInit, labels }) => {
-// }
+export enum Direction {
+    StandStill,
+    GoLeft,
+    GoRight,
+    FromLeft,
+    FromRight,
+}
+
 
 const Question:FunctionComponent<{
     profile: profile,
@@ -25,20 +26,21 @@ const Question:FunctionComponent<{
     setProfile: (prof: profile) => void,
     first: boolean,
     last: boolean,
-    // index: number
 }> = (({ profile, question, setProfile, first, last, changeQ }) => {
+
     const chang = useCallback((up:boolean) => {
         if (up && last) return
         if (!up && first) return
         changeQ(up)
-    }, [changeQ, last, first])
+    }, [last, first, changeQ])
+
 
     useGlobalListener('keydown', (e) => {
         if (e.key == 'ArrowLeft') chang(false)
         else if (e.key == 'ArrowRight') chang(true)
     })
 
-    return <Fragment>
+    return <div class={`container`}>
         {
         question.type == "Title" ?
             <Fragment>
@@ -53,9 +55,9 @@ const Question:FunctionComponent<{
                 }
             </Fragment>
         : <Fragment>
-            <h1 class="row" style={{marginTop: "7vh"}}>{question.question}</h1>
+            <a class="row" style={{marginTop: "7vh", textDecoration: question.a ? "underline #6F42C2" : "", textUnderlineOffset: "0.3vh"}} href={question.a} target={"_blank"} rel="noreferrer"><h1>{question.question}</h1></a>
             {
-                question.type == "input" ? <Fragment />
+                question.type == "input" ? <InputQuestion dataInit={question.values(profile)} filt={question.filter} inp={(inp) => setProfile(question.parse(inp, profile))} />
                 : question.type == "pie" ?
                     <PieQuestion inp={
                     (inp:Record<string, unknown>) => {
@@ -76,18 +78,21 @@ const Question:FunctionComponent<{
                     })()} />
                 : question.type == "graph" ?
                     <GraphQuestion labels={question.labels} inp={(ii) => setProfile(question.parse(ii, profile))} dataInit={question.values(profile)} />
-                    : question.type == "slider" ?
+                : question.type == "slider" ?
                     <SliderQuestion labels={question.optionsAndAliases(profile)} dataInit={question.values(profile)} inp={(inp) => setProfile(question.parse(inp, profile))} />
-                    : <Fragment />
+                : question.type == "radial" ?
+                    <RadialQuestion labels={question.optionsAndAliases(profile)} dataInit={question.values(profile)} inp={(inp) => setProfile(question.parse(inp, profile))} />
+                : question.type == "checkbox" ?
+                    <CheckboxQuestion labels={question.optionsAndAliases(profile)} dataInit={question.values(profile)} inp={(inp) => setProfile(question.parse(inp, profile))} />
+                : <Fragment />
             }
         </Fragment>
         }
-
         <div class="row" style={{width: "62vw", justifyContent: "space-between", zIndex: "99", position: "absolute", top: "78vh"}}>
             <button disabled={first} onClick={() => chang(false)} className="col btn btn-p"> Back </button>
             <button disabled={last} onClick={() => chang(true)} className="col btn btn-p"> Next </button>
         </div>
-    </Fragment>
+    </div>
 })
 
 export default Question

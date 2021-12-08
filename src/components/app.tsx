@@ -1,7 +1,7 @@
 import { FunctionalComponent } from 'preact';
-import { CSSTransition, TransitionGroup } from 'preact-transitioning';
+import { CSSTransition, StyleTransition, Transition, TransitionGroup } from 'preact-transitioning';
 import { useCallback, useState } from 'preact/hooks';
-import Question from './QuestionsHandlerMain';
+import Question, { Direction } from './QuestionsHandlerMain';
 import { defaultProfile, profile } from './profile';
 import { question, questions } from './questionair';
 
@@ -29,16 +29,13 @@ const App: FunctionalComponent = () => {
         }
     }, [ i, SetI, curProfile ])
 
+    const changeProfile = useCallback((prof:profile) => {
+        SetCurProfile(prof)
+        localStorage.setItem("profile", JSON.stringify(prof))
+    }, [])
+
     return (
-    // <TransitionGroup>
-    //     <CSSTransition exit={true} in={true} enter={true} appear={false}  duration={1300} classNames="trans" key={i}>
-    //         <div class="container">
-                <div class="container">
-                    <Question key={i} first={i == 0} last={i==(questions.length-1)} question={questions[i]} profile={curProfile} setProfile={SetCurProfile} changeQ={(up) => {changeQ(i + 1*(up ? 1 : -1), up)}} />
-                </div>
-    //         </div>
-    //     </CSSTransition>
-    // </TransitionGroup>
+        <Question key={i} first={i == 0} last={i==(questions.length-1)} question={questions[i]} profile={curProfile} setProfile={changeProfile} changeQ={(up) => {changeQ(i + 1*(up ? 1 : -1), up)}} />
     );
 };
 
