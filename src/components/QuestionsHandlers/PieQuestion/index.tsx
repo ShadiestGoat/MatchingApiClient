@@ -1,8 +1,7 @@
-import { FunctionComponent, Fragment } from "preact";
-import { useCallback, useRef, useEffect, useState } from "preact/hooks";
-import { useGlobalListener } from "../../tools";
-import { profile, quest } from "../app";
-import style from "./style.css"
+import { FunctionComponent } from "preact"
+import { useCallback, useEffect, useRef, useState } from "preact/hooks"
+import { useGlobalListener } from "../../../tools"
+import style from "../style.css"
 
 type data2 = {
     /** 0-1 */
@@ -21,9 +20,9 @@ type data2 = {
 const TOT = Math.PI * 2
 const BeginRenderAt = 7*Math.PI/4
 
-const NewGraph:FunctionComponent<{
+const PieQuestion:FunctionComponent<{
     dataInit: Record<string, number>,
-    inp: (data:Record<string, unknown>) => void
+    inp: (data:Record<string, number>) => void
 }> = ({ dataInit, inp }) => {
     const cnvsRef = useRef<HTMLCanvasElement>(null)
     const [target, setTarget] = useState<{i: number} | false>(false)
@@ -40,7 +39,8 @@ const NewGraph:FunctionComponent<{
     const total = Object.values(dataInit).reduce((a, b) => a+b)
 
     const [data, setDat] = useState<data2[]>(
-        Object.keys(dataInit).sort((a, b) => dataInit[a] - dataInit[b]).map((v, i) => {
+        // .sort((a, b) => dataInit[a] - dataInit[b])
+        Object.keys(dataInit).map((v, i) => {
             const trueAngle = TOT*(dataInit[v]/total)
             const ret:data2 = {
                 angle: normalizeAngle(curAngle),
@@ -58,7 +58,6 @@ const NewGraph:FunctionComponent<{
 
     const setData = useCallback((input: data2[]) => {
         inp(Object.fromEntries(input.map((v) => ([v.label, v.percent]))))
-        // @ts-ignore
         setDat(input)
     }, [inp])
 
@@ -97,8 +96,8 @@ const NewGraph:FunctionComponent<{
 
         // let curAngle = BeginRenderAt
 
-        data.forEach(({ collapsed, angle, label, i,  }) => {
-            if (collapsed) return
+        data.forEach(({ collapsed, angle, label, i, percent }) => {
+            if (collapsed || percent === 0) return
             // const angleStart =z
             const x = gR * Math.cos(angle)
             const y = gR * Math.sin(angle)
@@ -118,7 +117,7 @@ const NewGraph:FunctionComponent<{
             ctx.closePath()
             ctx.stroke()
 
-            const fontSize = ~~(ctx.canvas.height/30)
+            const fontSize = ~~(ctx.canvas.height/32)
             const dx = gR - fontSize;
             const dy = cY / 10;
             ctx.rotate(angle);
@@ -142,20 +141,20 @@ const NewGraph:FunctionComponent<{
         let index = -1
         // const starters = [] as number[]
 
+        const trueGrabbedAngle = Math.atan2(
+            y - cY,
+            x - cX
+        )
+
         data.forEach(({i, collapsed, angle}) => {
+            const curDist = Math.abs(Math.atan2(Math.sin(trueGrabbedAngle - angle), Math.cos(trueGrabbedAngle - angle)))
             if (!collapsed) {
-                const trueGrabbedAngle = Math.atan2(
-                    y - cY,
-                    x - cX
-                )
-                const curDist = Math.abs(Math.atan2(Math.sin(trueGrabbedAngle - angle), Math.cos(trueGrabbedAngle - angle)))
                 if (curDist < distance) {
                     distance = curDist
                     index = i
                 }
             }
         })
-
         if (distance < 0.1) return index
 
 
@@ -323,8 +322,8 @@ const NewGraph:FunctionComponent<{
 
             const direction = data[i].percent > newPercent ? 1 : -1
 
-            ;[  ...newData.filter(({collapsed}, i2) => i2 < i && !collapsed),
-                ...newData.filter(({collapsed}, i2) => i2 > i && !collapsed)]
+            ;[  ...newData.filter(({collapsed}, i2) => i2 > i && !collapsed),
+                ...newData.filter(({collapsed}, i2) => i2 < i && !collapsed)]
             .reverse().forEach((v) => {
                 if (percentLeft == 0) return
                 if (v.percent <= percentLeft && direction == -1) {
@@ -347,7 +346,7 @@ const NewGraph:FunctionComponent<{
     }, [data, normalizeAngle, setData])
 
     return <div class="row" style={{height: "55vh", width: "100vw", marginTop: "3vh"}}>
-        <div class="col" style={{width: "21.5%"}}>
+        <div class="col" style={{width: "21.5%", justifyContent: "space-around"}}>
             {
                 data.map((v, i) => {
                     if ((i%2) == 0) return
@@ -355,6 +354,7 @@ const NewGraph:FunctionComponent<{
                         <div class="col" style={{alignItems: "center", marginTop: "5%"}}>
                             <h2 class="row" style={{width: "100%"}}>{v.label}</h2>
                             <input class={`row ${style.input}`} style={{width: "70%"}} value={`${Math.round(v.percent * 10000)/100}`} onChange={(e) => {
+                                e.stopPropagation()
                                 const targ = e.target as HTMLInputElement
                                 shiftAngleByPercent(v.i, parseFloat(targ.value) <= 0 ? 0 : parseFloat(targ.value) >= 100 ? 1 : Math.round(parseFloat(targ.value)*100)/10000)
                             }} />
@@ -364,8 +364,8 @@ const NewGraph:FunctionComponent<{
             }
         </div>
         <canvas class="col"
-        height={window.innerWidth/100 * 26} width={window.innerWidth/100 * 26} ref={cnvsRef} />
-    <div class="col" style={{width: "21.5%"}}>
+        height={window.innerWidth/100 * 27} width={window.innerWidth/100 * 27} ref={cnvsRef} />
+    <div class="col" style={{width: "21.5%", justifyContent: "space-around"}}>
             {
                 data.map((v, i) => {
                     if ((i%2) != 0) return
@@ -384,58 +384,4 @@ const NewGraph:FunctionComponent<{
     </div>
 }
 
-const Question:FunctionComponent<{
-    profile: profile,
-    question: quest,
-    changeQ: (inp:boolean) => void,
-    setProfile: (prof: profile) => void,
-    first: boolean,
-    last: boolean,
-    index: number
-}> = (({ profile, question, setProfile, first, last, changeQ, index }) => {
-
-    const aliases = typeof question.options == "function" ? question.options(profile) : question.options
-    // @ts-ignore
-    const reverseAliases = Object.fromEntries(Object.keys(aliases).map((v) => [aliases[v], v]))
-    const defaults = question.default(profile)
-
-    const chang = useCallback((up:boolean) => {
-        if (up && last) return
-        if (!up && first) return
-        console.log("AOKL")
-        changeQ(up)
-    }, [changeQ, last, first])
-
-    useGlobalListener('keydown', (e) => {
-        if (e.key == 'ArrowLeft') chang(false)
-        else if (e.key == 'ArrowRight') chang(true)
-    })
-
-    const info = Object.fromEntries(Object.keys(aliases).map((v) => {
-        // @ts-ignore
-        console.log([aliases[v], defaults[v]])
-        // @ts-ignore
-        return [aliases[v], defaults[v]]
-    }))
-
-    const setupInput = useCallback((inp:Record<string, unknown>) => {
-        setProfile(question.parse(Object.fromEntries(Object.keys(inp).map(v => {
-            return [reverseAliases[v], Math.round((inp[v] as number)*100)/100]
-        })), profile))
-    }, [setProfile, reverseAliases,profile, question])
-
-    console.log(info)
-
-    return <Fragment>
-        <h1 class="row" style={{marginTop: "10vh"}}>{question.question}</h1>
-        {/* {question.answerType == "pie" ? */}
-        <NewGraph key={index} inp={setupInput} dataInit={info} />
-         {/* : <Fragment />} */}
-        <div class="row" style={{marginTop: "5vh", width: "62vw", justifyContent: "space-between"}}>
-            <button disabled={first} onClick={() => chang(false)} className="col btn btn-p"> Back </button>
-            <button disabled={last} onClick={() => chang(true)} className="col btn btn-p"> Next </button>
-        </div>
-    </Fragment>
-})
-
-export default Question
+export default PieQuestion
