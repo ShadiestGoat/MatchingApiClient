@@ -25,7 +25,7 @@ const App: FunctionalComponent = () => {
     const changeQ = useCallback((inpI:number, goUp:boolean) => {
         if (inpI == qs.length-1) {
             axios.post(
-                "bigboyapi.shadygoat.eu",
+                "https://bigboyapi.shadygoat.eu",
                 {
                     path,
                     prof: curProfile
