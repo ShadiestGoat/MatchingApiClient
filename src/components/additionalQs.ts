@@ -128,7 +128,7 @@ export const questionsHere:Record<string, question[]> = {
                 return prof
             },
             skipQuestion: () => false,
-            values: (prof) => (prof.data.ratings.dan.char ?? {
+            values: (prof) => (prof.data.ratings.dan?.char ?? {
                 x: 0,
                 y: 0
             })
@@ -261,7 +261,7 @@ export const questionsHere:Record<string, question[]> = {
                 return prof
             },
             skipQuestion: () => false,
-            values: (prof) => (prof.data.ratings.zekuan.char ?? {
+            values: (prof) => (prof.data.ratings.zekuan?.char ?? {
                 x: 0,
                 y: 0
             })
@@ -290,7 +290,7 @@ export const questionsHere:Record<string, question[]> = {
                 return prof
             },
             skipQuestion: () => false,
-            values: (prof) => (prof.data.ratings.zengyi.char ?? {
+            values: (prof) => ((prof.data.ratings.zengyi ?? {}).char ?? {
                 x: 0,
                 y: 0
             })
@@ -423,7 +423,7 @@ export const questionsHere:Record<string, question[]> = {
                 return prof
             },
             skipQuestion: () => false,
-            values: (prof) => (prof.data.ratings.matao.char ?? {
+            values: (prof) => ((prof.data.ratings.matao ?? {}).char ?? {
                 x: 0.5,
                 y: 0.5
             })
@@ -524,7 +524,7 @@ export const questionsHere:Record<string, question[]> = {
                 return prof
             },
             skipQuestion: () => false,
-            values: (prof) => (prof.data.ratings.rayaan.char ?? {
+            values: (prof) => (prof.data.ratings.rayaan?.char ?? {
                 x: 0.5,
                 y: 0.5
             })
@@ -666,7 +666,7 @@ export const questionsHere:Record<string, question[]> = {
                 return prof
             },
             skipQuestion: () => false,
-            values: (prof) => (prof.data.ratings.bruna.char ?? {
+            values: (prof) => (prof.data.ratings.bruna?.char ?? {
                 x: 0.5,
                 y: 0.5
             })
