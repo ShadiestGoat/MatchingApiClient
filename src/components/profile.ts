@@ -120,19 +120,19 @@ export const defaultProfile:profile = {
             },
             top: 2
         },
-        intoForeplay: 0.6,
+        intoForeplay: 0.5,
         infp: "",
         politicalCompass: "",
         ratings: {}
     },
     pref: {
         annoying: {
-            Edgy: 0.2,
-            Egoistic: 0.2,
-            GoodTemper: 0.8,
-            Mature: 0.8,
-            Selfish: 0.2,
-            Talkative: 0.3
+            Edgy: 0.5,
+            Egoistic: 0.5,
+            GoodTemper: 0.5,
+            Mature: 0.5,
+            Selfish: 0.5,
+            Talkative: 0.5
         },
         infp: {
             FT: 0.5,
@@ -154,29 +154,29 @@ export const defaultProfile:profile = {
             LittleAcne: 0.7
         },
         personality: {
-            Creepy: 0.2,
-            Cute: 0.2,
-            Funny: 0.7,
-            Kind: 0.7,
-            OpenMinded: 0.9,
+            Creepy: 0.5,
+            Cute: 0.5,
+            Funny: 0.5,
+            Kind: 0.5,
+            OpenMinded: 0.5,
         },
         political: {
             MatchCompass: {
                 x: 0.5,
                 y: 0.5
             },
-            politicalInvolvement: 0.6
+            politicalInvolvement: 0.5
         },
         sexual: {
-            IntoForeplay: 0.7,
-            Thirst: 0.6
+            IntoForeplay: 0.5,
+            Thirst: 0.5
         },
         traits: {
-            BookSmart: 0.6,
-            StreetSmart: 0.8,
-            GoodCook: 0.7,
-            Rich: 0.7,
-            TechSavy: 0.7,
+            BookSmart: 0.5,
+            StreetSmart: 0.5,
+            GoodCook: 0.5,
+            Rich: 0.5,
+            TechSavy: 0.5,
         },
         characterAlignment: {
             x: 0.5,

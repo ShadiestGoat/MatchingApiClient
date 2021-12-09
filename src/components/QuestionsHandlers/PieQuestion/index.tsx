@@ -298,6 +298,7 @@ const PieQuestion:FunctionComponent<{
 
         const newAngle = normalizeAngle((data[i].collapsed ? -[...normalVisble, ...normalVisble, ...normalVisble][mapVisible[i] - 1].angle : data[i].angle) - (newPercent-data[i].percent)*TOT)
         const newData = JSON.parse(JSON.stringify(data)) as data2[]
+        
         /** data index : visible index */
 
         // function generateVisible() {

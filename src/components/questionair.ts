@@ -360,11 +360,11 @@ export const questions:allQuestions[] = [
         type: "slider",
         optionsAndAliases: (prof) => Object.fromEntries<{inside: labelOne[], outside: [string, string]}>(
             ([
-                ["Creepy", "Feeling", "Thinking"],
-                ["Cute", "Introversion", "Extroversion"],
-                ["Funny", "Judging", "Perceiving"],
-                ["Kind", "Sensing", "Intuition"],
-                ["OpenMinded", "Sensing", "Intuition"],
+                ["Creepy", "Not Creepy", "Creepy"],
+                ["Cute", "Not Cute", "Cute"],
+                ["Funny", "Unfunny", "Funny"],
+                ["Kind", "Mean", "Kind"],
+                ["OpenMinded", "Closed Minded", "Open Minded"],
             ] as [keyof profile['pref']['personality'], string, string][]).filter(
                 v => prof.weights.personality[v[0]]).map(v => [v[0], {
                     inside: [],
