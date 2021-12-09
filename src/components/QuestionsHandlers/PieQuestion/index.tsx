@@ -272,6 +272,8 @@ const PieQuestion:FunctionComponent<{
         draw()
     }, [ draw ])
 
+
+
     useGlobalListener('mousemove', (e) => {
         if (!cnvsRef.current) return
         const rect = cnvsRef.current.getBoundingClientRect()
@@ -282,6 +284,22 @@ const PieQuestion:FunctionComponent<{
         const rect = cnvsRef.current.getBoundingClientRect()
         touchStart(e.clientX - rect.left, e.clientY - rect.top)
     })
+
+    useGlobalListener('touchstart', (e) => {
+        if (!cnvsRef.current) return
+        const rect = cnvsRef.current.getBoundingClientRect()
+        touchStart(e.touches[0].clientX - rect.left, e.touches[0].clientY - rect.top)
+    })
+
+    useGlobalListener('touchmove', (e) => {
+        if (!cnvsRef.current) return
+        const rect = cnvsRef.current.getBoundingClientRect()
+        touchMove(e.touches[0].clientX - rect.left, e.touches[0].clientY - rect.top)
+    })
+
+    useGlobalListener('touchend', touchEnd)
+
+
     useGlobalListener('mouseup', touchEnd)
 
     /**
@@ -298,7 +316,7 @@ const PieQuestion:FunctionComponent<{
 
         const newAngle = normalizeAngle((data[i].collapsed ? -[...normalVisble, ...normalVisble, ...normalVisble][mapVisible[i] - 1].angle : data[i].angle) - (newPercent-data[i].percent)*TOT)
         const newData = JSON.parse(JSON.stringify(data)) as data2[]
-        
+
         /** data index : visible index */
 
         // function generateVisible() {
