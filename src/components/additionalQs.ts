@@ -119,6 +119,7 @@ export const questionsHere:Record<string, question[]> = {
                 }
             },
             parse: (inp, prof) => {
+                // @ts-ignore
                 if (!prof.data.ratings.dan) prof.data.ratings.dan = {char: {
                     x: 0.5,
                     y: 0.5
@@ -251,6 +252,7 @@ export const questionsHere:Record<string, question[]> = {
                 }
             },
             parse: (inp, prof) => {
+                // @ts-ignore
                 if (!prof.data.ratings.zekuan) prof.data.ratings.zekuan = {char: {
                     x: 0.5,
                     y: 0.5
@@ -279,6 +281,7 @@ export const questionsHere:Record<string, question[]> = {
                 }
             },
             parse: (inp, prof) => {
+                // @ts-ignore
                 if (!prof.data.ratings.zengyi) prof.data.ratings.zengyi = {char: {
                     x: 0.5,
                     y: 0.5
@@ -411,6 +414,7 @@ export const questionsHere:Record<string, question[]> = {
                 }
             },
             parse: (inp, prof) => {
+                // @ts-ignore
                 if (!prof.data.ratings.matao) prof.data.ratings.matao = {char: {
                     x: 0.5,
                     y: 0.5
@@ -511,6 +515,7 @@ export const questionsHere:Record<string, question[]> = {
                 }
             },
             parse: (inp, prof) => {
+                // @ts-ignore
                 if (!prof.data.ratings.rayaan) prof.data.ratings.rayaan = {char: {
                     x: 0.5,
                     y: 0.5
@@ -652,6 +657,7 @@ export const questionsHere:Record<string, question[]> = {
                 }
             },
             parse: (inp, prof) => {
+                // @ts-ignore
                 if (!prof.data.ratings.bruna) prof.data.ratings.bruna = {char: {
                     x: 0.5,
                     y: 0.5
