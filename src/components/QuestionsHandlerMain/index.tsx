@@ -34,7 +34,6 @@ const Question:FunctionComponent<{
         changeQ(up)
     }, [last, first, changeQ])
 
-
     useGlobalListener('keydown', (e) => {
         if (e.key == 'ArrowLeft') chang(false)
         else if (e.key == 'ArrowRight') chang(true)

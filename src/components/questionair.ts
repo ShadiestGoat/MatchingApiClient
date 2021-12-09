@@ -310,7 +310,7 @@ export const questions:allQuestions[] = [
         optionsAndAliases: (prof) => Object.fromEntries(
             ([
                 ["Edgy", "Not Edgy", "Edgelord"],
-                ["Egoistic", "No ego", "Extreme egoism"], //TODO: SPLIT INTO 2 QUESTIONS
+                ["Egoistic", "No ego", "Extreme egoism"],
                 ["GoodTemper", "Easy to Anger", "Hard to anger"],
                 ["Mature", "Immature", "Very Mature"],
                 ["Selfish", "Selfish", "Selfless"],
@@ -355,6 +355,30 @@ export const questions:allQuestions[] = [
         },
         values: (prof) => prof.pref.infp
     } as sliderQuestion<infpRes>,
+    {
+        question: "What do you prefer in your partner?",
+        type: "slider",
+        optionsAndAliases: (prof) => Object.fromEntries<{inside: labelOne[], outside: [string, string]}>(
+            ([
+                ["Creepy", "Feeling", "Thinking"],
+                ["Cute", "Introversion", "Extroversion"],
+                ["Funny", "Judging", "Perceiving"],
+                ["Kind", "Sensing", "Intuition"],
+                ["OpenMinded", "Sensing", "Intuition"],
+            ] as [keyof profile['pref']['personality'], string, string][]).filter(
+                v => prof.weights.personality[v[0]]).map(v => [v[0], {
+                    inside: [],
+                    outside: v.slice(1) as [string, string]
+                }
+            ])
+        ),
+        skipQuestion: (prof) => prof.weights.major.Personality === 0 || Object.values(prof.weights.personality).reduce((a, b) => a+b) === 0,
+        parse: (inp, profile) => {
+            profile.pref.personality = Object.assign(profile.pref.infp, inp)
+            return profile
+        },
+        values: (prof) => prof.pref.personality
+    } as sliderQuestion<keyof profile['pref']['personality']>,
     {
         question: "What character alignment are you looking for in your partner?",
         type: "graph",
@@ -417,8 +441,8 @@ export const questions:allQuestions[] = [
             prof.pref.political.MatchCompass = inp
             return prof
         },
-        values: (prof) => prof.pref.political.MatchCompass,
         skipQuestion: (prof) => prof.weights.major.Traits == 0 || prof.weights.traits.MatchPolitical === 0 || prof.weights.political.MatchCompass === 0,
+        values: (prof) => prof.pref.political.MatchCompass,
     } as graphQuestion,
     {
         question: "What makes someone hot?",
@@ -510,7 +534,7 @@ export const questions:allQuestions[] = [
             prof.weights.traits.StreetSmart === 0 ? {} :
             {StreetSmart: {
                 inside: [] as labelOne[],
-                outside: ["Oblivius", "Understands"]
+                outside: ["Oblivious", "Understands"]
             }}
         )),
         parse: (inp, prof) => {

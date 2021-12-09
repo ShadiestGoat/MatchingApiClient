@@ -76,7 +76,8 @@ export type profile = {
         },
         intoForeplay: number,
         politicalCompass: string,
-        infp: string
+        infp: string,
+        ratings: Record<string, Record<string, number> & {char: coords}>
     },
     pref: {
         annoying: Record<annoying, number>,
@@ -121,7 +122,8 @@ export const defaultProfile:profile = {
         },
         intoForeplay: 0.6,
         infp: "",
-        politicalCompass: ""
+        politicalCompass: "",
+        ratings: {}
     },
     pref: {
         annoying: {

@@ -29,21 +29,6 @@ const SliderQuestion:FunctionComponent<{
         inp(inpu)
     }, [inp])
 
-    const getMetaInfo = useCallback((): {
-        cX: number,
-        cY: number,
-    } => {
-        const de = {
-            cX: 0,
-            cY: 0,
-        }
-        if (!cnvsRef.current) return de
-        de.cX = ~~(cnvsRef.current.width /2)
-        de.cY = ~~(cnvsRef.current.height/2)
-        // de.gR = 0.9 * Math.min(de.cX, de.cY)
-        return de
-    }, [])
-
     const draw = useCallback(() => {
         if (!cnvsRef.current) return
         const canvs = cnvsRef.current
@@ -108,7 +93,7 @@ const SliderQuestion:FunctionComponent<{
         })
 
         return closest
-    }, [getMetaInfo, formats, keys])
+    }, [formats, keys])
 
     useGlobalListener('mousemove', (e) => {
         const canvs = cnvsRef.current
@@ -151,7 +136,7 @@ const SliderQuestion:FunctionComponent<{
         setHoverTarget("")
     })
 
-    useGlobalListener('mouseup', (e) => {
+    useGlobalListener('mouseup', () => {
         const oldTarget = target
         setTarget("")
         setHoverTarget(oldTarget)
@@ -195,7 +180,7 @@ const SliderQuestion:FunctionComponent<{
 
                 setData(newData)
                 setTarget("")
-                setHoverTarget("")
+                setHoverTarget(hvr)
 
             }} />
         <div class="col" style={{width: "36%", justifyContent: "space-evenly", alignItems: "flex-start"}}>
