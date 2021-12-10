@@ -75,34 +75,35 @@ export type profile = {
             orientation: Record<gender, boolean>,
         },
         intoForeplay: number,
+        ratings: Record<string, Record<string, number> & {char: coords}>
         politicalCompass: string,
         infp: string,
-        ratings: Record<string, Record<string, number> & {char: coords}>
     },
     pref: {
         annoying: Record<annoying, number>,
         traits: Record<Exclude<traits, "MatchPolitical">, number>,
+        looksFace: Record<looksFace, number>,
+        infp: Record<infpRes, number>,
         political: {
             politicalInvolvement: number,
             MatchCompass: coords
         },
         sexual: Record<Exclude<sexualCompatability, "MatchTop" | "MatchBDSM">, number>,
-        looksFace: Record<looksFace, number>,
         looks: Record<Exclude<looks, "MatchFace">, number>,
         personality: Record<Exclude<personality, "Annoying" | "MatchINFP" | "CharacterAlignment">, number>,
-        infp: Record<infpRes, number>,
+
         characterAlignment: coords
     },
     weights: {
-        major: Record<majorMatch, number>,
+        annoying: Record<annoying, number>,
         traits: Record<traits, number>,
+        looksFace: Record<looksFace, number>,
+        infp: Record<infpRes, number>
+        major: Record<majorMatch, number>,
         political: Record<politicalMatch, number>,
         sexual: Record<sexualCompatability, number>,
-        looksFace: Record<looksFace, number>,
         looks: Record<looks, number>,
         personality: Record<personality, number>,
-        annoying: Record<annoying, number>,
-        infp: Record<infpRes, number>
     },
 }
 

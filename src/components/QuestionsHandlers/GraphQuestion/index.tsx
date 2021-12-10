@@ -26,7 +26,6 @@ const GraphQuestion:FunctionComponent<{
         if (!cnvsRef.current) return de
         de.cX = ~~(cnvsRef.current.width /2)
         de.cY = ~~(cnvsRef.current.height/2)
-        // de.gR = 0.9 * Math.min(de.cX, de.cY)
         return de
     }, [])
 
@@ -111,6 +110,7 @@ const GraphQuestion:FunctionComponent<{
         //
         // Lines at the end of Axis
         //
+        
         ctx.lineWidth = 3
 
         ctx.beginPath()
@@ -146,14 +146,14 @@ const GraphQuestion:FunctionComponent<{
         ctx.fillStyle = "#1E1E1E"
 
         ctx.beginPath()
-        ctx.arc(data.x + cX, data.y + cY, 10, 0, Math.PI * 2)
+        ctx.arc(data.x * canvs.width, data.y * canvs.width, 10, 0, Math.PI * 2)
         ctx.fill()
         ctx.closePath()
 
         ctx.fillStyle = "#ffffff"
 
         ctx.beginPath()
-        ctx.arc(data.x + cX, data.y + cY, 6, 0, Math.PI * 2)
+        ctx.arc(data.x * canvs.width, data.y * canvs.width, 6, 0, Math.PI * 2)
         ctx.fill()
         ctx.closePath()
 
@@ -185,21 +185,19 @@ const GraphQuestion:FunctionComponent<{
                 if (!cnvsRef.current) return
 
                 const rect = cnvsRef.current.getBoundingClientRect()
-                const { cX, cY } = getMetaInfo()
                 setData({
-                    x: e.clientX - rect.left - cX,
-                    y: e.clientY - rect.top - cY
+                    x: (e.clientX - rect.left)/cnvsRef.current.width,
+                    y: (e.clientY - rect.top)/cnvsRef.current.width
                 })
             }} onMouseMove={(e) => {
                 if (e.buttons !== 1) return
                 if (!cnvsRef.current) return
 
                 const rect = cnvsRef.current.getBoundingClientRect()
-                const { cX, cY } = getMetaInfo()
 
                 setData({
-                    x: e.clientX - rect.left - cX,
-                    y: e.clientY - rect.top - cY
+                    x: (e.clientX - rect.left)/cnvsRef.current.width,
+                    y: (e.clientY - rect.top)/cnvsRef.current.width
                 })
             }}
             />
