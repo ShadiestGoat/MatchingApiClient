@@ -61,8 +61,8 @@ export type allQuestions = question | {type: "Title", content: string, subtitle?
 export const questions:allQuestions[] = [
     {
         type: "Title",
-        content: "Lets start with how important stuff are to you",
-        subtitle: "*Note, these are just the importance, preferance will be set later!",
+        content: "Lets start with how importantance!",
+        subtitle: "Note: When it says smt like 'creepiness', and you really don't want them to be creepy, set the creepyness to be high importance as preferance will be set later!",
     },
     {
         question: "How important are these qualities to you in a partner?",
