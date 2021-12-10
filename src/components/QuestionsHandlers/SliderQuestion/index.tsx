@@ -154,35 +154,40 @@ const SliderQuestion:FunctionComponent<{
                     )
                 }
             </div>
-            <canvas class="col" height={window.innerWidth/100 * 27} width={window.innerWidth/100 * 27} ref={cnvsRef}
-            onClick={(e) => {
-                const canvs = cnvsRef.current
-                if (!canvs) return
-                const ctx = canvs.getContext('2d')
-                if (!ctx) return
-                const rect = canvs.getBoundingClientRect()
-                const x = e.clientX - rect.left
-                const y = e.clientY - rect.top
+            <div style={{
+                height: "27vw",
+                width: "27vw"
+            }}>
+                <canvas class="col" height={window.innerWidth/100 * 27} width={window.innerWidth/100 * 27} ref={cnvsRef}
+                    onClick={(e) => {
+                        const canvs = cnvsRef.current
+                        if (!canvs) return
+                        const ctx = canvs.getContext('2d')
+                        if (!ctx) return
+                        const rect = canvs.getBoundingClientRect()
+                        const x = e.clientX - rect.left
+                        const y = e.clientY - rect.top
 
-                const newData = {...data}
-                let newPercent = 0
+                        const newData = {...data}
+                        let newPercent = 0
 
-                if (x < canvs.width*marginPercnt) newPercent = 0
-                else if (x > canvs.width*(1-marginPercnt)) newPercent = 1
-                else newPercent = (x-canvs.width*marginPercnt)/(canvs.width*(1-marginPercnt*2))
+                        if (x < canvs.width*marginPercnt) newPercent = 0
+                        else if (x > canvs.width*(1-marginPercnt)) newPercent = 1
+                        else newPercent = (x-canvs.width*marginPercnt)/(canvs.width*(1-marginPercnt*2))
 
-                const closest = getTarget(y)
+                        const closest = getTarget(y)
 
-                const hvr = closest.distance < canvs.height*0.2 ? closest.key : target ? target : ""
-                if (!hvr) return
+                        const hvr = closest.distance < canvs.height*0.2 ? closest.key : target ? target : ""
+                        if (!hvr) return
 
-                newData[hvr] = newPercent
+                        newData[hvr] = newPercent
 
-                setData(newData)
-                setTarget("")
-                setHoverTarget(hvr)
-
-            }} />
+                        setData(newData)
+                        setTarget("")
+                        setHoverTarget(hvr)
+                    }}
+                />
+            </div>
         <div class="col" style={{width: "36%", justifyContent: "space-evenly", alignItems: "flex-start"}}>
             {
                 keys.map(k =>

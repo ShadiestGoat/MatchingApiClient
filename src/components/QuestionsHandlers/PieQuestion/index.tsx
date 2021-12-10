@@ -34,7 +34,6 @@ const PieQuestion:FunctionComponent<{
         return Math.round(angle*1000)/1000
     }, [])
 
-
     let curAngle = BeginRenderAt
     const total = Object.values(dataInit).reduce((a, b) => a+b)
 
@@ -54,7 +53,6 @@ const PieQuestion:FunctionComponent<{
             return ret
         })
     )
-
 
     const setData = useCallback((input: data2[]) => {
         inp(Object.fromEntries(input.map((v) => ([v.label, v.percent]))))
@@ -272,11 +270,11 @@ const PieQuestion:FunctionComponent<{
         draw()
     }, [ draw ])
 
-
-
     useGlobalListener('mousemove', (e) => {
         if (!cnvsRef.current) return
+        console.log(cnvsRef.current.height)
         const rect = cnvsRef.current.getBoundingClientRect()
+        console.log(rect.top)
         touchMove(e.clientX - rect.left, e.clientY - rect.top)
     })
     useGlobalListener('mousedown', (e) => {
@@ -284,13 +282,11 @@ const PieQuestion:FunctionComponent<{
         const rect = cnvsRef.current.getBoundingClientRect()
         touchStart(e.clientX - rect.left, e.clientY - rect.top)
     })
-
     useGlobalListener('touchstart', (e) => {
         if (!cnvsRef.current) return
         const rect = cnvsRef.current.getBoundingClientRect()
         touchStart(e.touches[0].clientX - rect.left, e.touches[0].clientY - rect.top)
     })
-
     useGlobalListener('touchmove', (e) => {
         if (!cnvsRef.current) return
         const rect = cnvsRef.current.getBoundingClientRect()
@@ -314,24 +310,23 @@ const PieQuestion:FunctionComponent<{
         const normalVisble = data.filter(k => !k.collapsed || k.i == i)
         const mapVisible = Object.fromEntries(normalVisble.map((v, i2) => [v.i, i2]))
 
-        const newAngle = normalizeAngle((data[i].collapsed ? -[...normalVisble, ...normalVisble, ...normalVisble][mapVisible[i] - 1].angle : data[i].angle) - (newPercent-data[i].percent)*TOT)
+        console.log(normalVisble.length === 2 && data[i].collapsed)
+        console.log(normalizeAngle(normalVisble[0].angle - TOT*newPercent))
+
+        const newAngle =
+                    normalVisble.length === 2 && data[i].collapsed ?
+                        normalizeAngle(normalVisble[0].angle - TOT*newPercent)
+                    : normalizeAngle((data[i].collapsed ? -[...normalVisble, ...normalVisble, ...normalVisble][mapVisible[i] - 1].angle : data[i].angle) - (newPercent-data[i].percent)*TOT)
+
         const newData = JSON.parse(JSON.stringify(data)) as data2[]
-
-        /** data index : visible index */
-
-        // function generateVisible() {
-        //     if (i === null) return
-        //     normalVisble = newData.filter(k => !k.collapsed || k.i == i)
-        //     mapVisible = Object.fromEntries(normalVisble.map((v, i2) => [v.i, i2]))
-        // }
 
         if (newData[i].collapsed) {
             [...normalVisble, ...normalVisble, ...normalVisble][mapVisible[i] + 1]
         }
 
         if (normalVisble.length == 1) {
-                newData[i].angle = newAngle
-                newData[i].percent = 1
+                newData[normalVisble[0].i].angle = newAngle
+                newData[normalVisble[0].i].percent = 1
         } else {
             newData[i].angle = newAngle
             newData[i].percent = newPercent
@@ -357,14 +352,55 @@ const PieQuestion:FunctionComponent<{
 
                 newData[v.i] = v
             })
-            // generateVisible()
+
+            // function generateVisible() {
+            //     if (trgt === null) return
+            //     normalVisble = newData.filter(k => !k.collapsed || (k.i == trgt && true))
+            //     visible = [...normalVisble, ...normalVisble, ...normalVisble]
+            //     /** data index : visible index */
+            //     visibleMp = Object.fromEntries(normalVisble.map((v, i) => [v.i, i + normalVisble.length])) as Record<number, number>
+
+            //     nextSegment = visible[visibleMp[trgt] + 1]
+            //     previousSegment = visible[visibleMp[trgt] - 1]
+
+            //     if (newData[trgt].collapsed) {
+            //         nextAngle = 0
+            //         prevAngle = normalizeAngle(nextSegment.angle - previousSegment.angle)
+            //     } else {
+            //         nextAngle = normalizeAngle(nextSegment.angle - newAngle)
+            //         prevAngle = normalizeAngle(newAngle - previousSegment.angle)
+            //     }
+            // }
+
+            const nV = newData.filter(k => !k.collapsed || (k.i == i && true))
+            const vi = [...nV, ...nV, ...nV]
+            const viMp = Object.fromEntries(nV.map((v, i) => [v.i, i + nV.length])) as Record<number, number>
+
+            const nextSegment = vi[viMp[i] + 1]
+            const previousSegment = vi[viMp[i] - 1]
+
+            let nextAngle = normalizeAngle(nextSegment.angle - newAngle)
+            let prevAngle = normalizeAngle(newAngle - previousSegment.angle)
+
+            if (newData[i].collapsed) {
+                nextAngle = 0
+                prevAngle = normalizeAngle(nextSegment.angle - previousSegment.angle)
+            }
+
+            if (newData.filter((k) => !k.collapsed).length == 1) {
+                newData[previousSegment.i].percent = 1
+            } else {
+                newData[i].percent = nextAngle/TOT
+                newData[previousSegment.i].percent = prevAngle/TOT
+            }
         }
+
 
         setData(newData)
         setTarget(false)
     }, [data, normalizeAngle, setData])
 
-    return <div class="row" style={{height: "55vh", width: "100vw", marginTop: "3vh"}}>
+    return <div class="row" style={{height: "55vh", width: "100vw", marginTop: "3vh", alignItems: "center"}}>
         <div class="col" style={{width: "21.5%", justifyContent: "space-around"}}>
             {
                 data.map((v, i) => {
@@ -382,8 +418,12 @@ const PieQuestion:FunctionComponent<{
                 })
             }
         </div>
-        <canvas class="col"
-        height={window.innerWidth/100 * 27} width={window.innerWidth/100 * 27} ref={cnvsRef} />
+        <div style={{
+            height: "27vw",
+            width: "27vw"
+        }}>
+            <canvas class="col" height={window.innerWidth * 0.27} width={window.innerWidth * 0.27} ref={cnvsRef} />
+        </div>
     <div class="col" style={{width: "21.5%", justifyContent: "space-around"}}>
             {
                 data.map((v, i) => {

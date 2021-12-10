@@ -173,8 +173,13 @@ const GraphQuestion:FunctionComponent<{
                 <h3 class="row">{labels.outside.middle[0]}</h3>
                 <h3 class="row">{labels.outside.bottom[0]}</h3>
             </div>
+
+        <div style={{
+            height: "27vw",
+            width: "27vw"
+        }}>
             <canvas class="col"
-            height={window.innerWidth/100 * 27} width={window.innerWidth/100 * 27} ref={cnvsRef}
+            height={window.innerWidth * 0.27} width={window.innerWidth * 0.27} ref={cnvsRef}
             onClick={(e) => {
                 if (e.button) return
                 if (!cnvsRef.current) return
@@ -198,6 +203,7 @@ const GraphQuestion:FunctionComponent<{
                 })
             }}
             />
+        </div>
         <div class="col" style={{width: "36%", justifyContent: "space-between", alignItems: "flex-start"}}>
             <h3 class="row">{labels.outside.top[2]}</h3>
             <h3 class="row">{labels.outside.middle[2]}</h3>
