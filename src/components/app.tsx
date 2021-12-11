@@ -6,7 +6,13 @@ import { allQuestions, question, questions } from './questionair';
 import { questionsHere } from './additionalQs';
 import axios from 'axios';
 
+const V = "1.0.1"
+
 const App: FunctionalComponent = () => {
+    if (localStorage.getItem("v") != V) {
+        localStorage.removeItem("profile")
+        localStorage.setItem("v", V)
+    }
     const [curProfile, SetCurProfile] = useState<profile>(JSON.parse(localStorage.getItem("profile") ?? JSON.stringify(defaultProfile)))
     const [i, SetI] = useState<number>(0)
 
