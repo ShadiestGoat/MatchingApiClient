@@ -51,8 +51,19 @@ const App: FunctionalComponent = () => {
         }
     }, [ i, SetI, curProfile, qs, path ])
 
-    const changeProfile = useCallback((prof:profile) => {
+    const changeProfile = useCallback((prof:profile, major:keyof profile, sub?:string) => {
         SetCurProfile(prof)
+        function loopOver(cur:Record<string, unknown>):Record<string, unknown> {
+            Object.keys(cur).forEach((k) => {
+                if (typeof cur[k] == "number") {
+                    cur[k] = Math.round((cur[k] as number)*100)/100
+                } else if (typeof cur[k] == "object") {
+                    cur[k] = loopOver(cur[k] as Record<string, unknown>)
+                }
+            })
+            return cur
+        }
+        if (sub) loopOver((prof[major] as Record<string, Record<string, unknown>>)[sub]) // optimise & no need to loop over all keys :)
         localStorage.setItem("profile", JSON.stringify(prof))
     }, [])
 

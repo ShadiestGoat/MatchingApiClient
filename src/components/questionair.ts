@@ -7,7 +7,9 @@ type baseQuestion<T> = {
     /** if true, skip the question */
     skipQuestion: (prof: profile) => boolean,
     values: (prof: profile) => T,
-    parse: (inp: T, prof: profile) => profile
+    parse: (inp: T, prof: profile) => profile,
+    major: keyof profile,
+    sub?: string
 }
 
 export type inputQuestion = {
@@ -79,6 +81,8 @@ export const questions:allQuestions[] = [
         },
         skipQuestion: () => false,
         values: (prof) => prof.weights.major,
+        major: "weights",
+        sub: "major"
     } as pieQuestion<majorMatch>,
     {
         question: "How important are these qualities for hotness?",
@@ -96,7 +100,9 @@ export const questions:allQuestions[] = [
             prof.weights.looks = inp
             return prof
         },
-        values: (prof) => prof.weights.looks
+        values: (prof) => prof.weights.looks,
+        major: "weights",
+        sub: "looks"
     } as pieQuestion<looks>,
     {
         question: "How important are these factors for face hotness?",
@@ -112,7 +118,9 @@ export const questions:allQuestions[] = [
             return prof
         },
         skipQuestion: (prof) => prof.weights.major.Looks === 0 || prof.weights.looks.MatchFace === 0,
-        values: (prof) => prof.weights.looksFace
+        values: (prof) => prof.weights.looksFace,
+        major: "weights",
+        sub: "looksFace"
     } as pieQuestion<looksFace>,
     {
         question: "How important are these traits?",
@@ -130,7 +138,9 @@ export const questions:allQuestions[] = [
             prof.weights.traits = inp
             return prof
         },
-        values: (prof) => prof.weights.traits
+        values: (prof) => prof.weights.traits,
+        major: "weights",
+        sub: "traits"
     } as pieQuestion<traits>,
     {
         question: "How important are these qualities for personality?",
@@ -150,7 +160,9 @@ export const questions:allQuestions[] = [
             return prof
         },
         skipQuestion: (prof) => prof.weights.major.Personality === 0,
-        values: (prof) => prof.weights.personality
+        values: (prof) => prof.weights.personality,
+        major: "weights",
+        sub: "personality"
     } as pieQuestion<personality>,
     {
         question: "How much do you care about these personality traits?",
@@ -167,6 +179,8 @@ export const questions:allQuestions[] = [
             return prof
         },
         values: (prof) => prof.weights.infp,
+        major: "weights",
+        sub: "infp"
     } as pieQuestion<infpRes>,
     {
         question: "By importance, what makes someone annoying?",
@@ -184,9 +198,10 @@ export const questions:allQuestions[] = [
             prof.weights.annoying = inp
             return prof
         },
-        values: (prof) => prof.weights.annoying
+        values: (prof) => prof.weights.annoying,
+        major: "weights",
+        sub: "annoying"
     } as pieQuestion<annoying>,
-
     {
         type: "Title",
         content: "Let's find out a bit more about you",
@@ -201,7 +216,8 @@ export const questions:allQuestions[] = [
             prof.data.infp = inp
             return prof
         },
-        values: (prof) => prof.data.infp
+        values: (prof) => prof.data.infp,
+        major: "data",
     },
     {
         question: "Do the political compass test & paste the resulting link:",
@@ -213,7 +229,8 @@ export const questions:allQuestions[] = [
             prof.data.politicalCompass = inp
             return prof
         },
-        values: (prof) => prof.data.politicalCompass
+        values: (prof) => prof.data.politicalCompass,
+        major: "data",
     },
     {
         question: "What gender are you?",
@@ -230,7 +247,8 @@ export const questions:allQuestions[] = [
             return prof
         },
         skipQuestion: () => false,
-        values: (prof) => prof.data.metas.gender
+        values: (prof) => prof.data.metas.gender,
+        major: "data",
     } as question<gender>,
     {
         question: "Are you a monogomist?",
@@ -246,6 +264,7 @@ export const questions:allQuestions[] = [
         },
         skipQuestion: () => false,
         values: (prof) => prof.data.metas.monogomy.toString() as "0" | "1" | "2",
+        major: "data"
     } as question<"0" | "1" | "2">,
     {
         question: "Are you a top?",
@@ -261,6 +280,7 @@ export const questions:allQuestions[] = [
         },
         skipQuestion: () => false,
         values: (prof) => prof.data.metas.top.toString() as "0" | "1" | "2",
+        major: "data"
     } as question<"0" | "1" | "2">,
     {
         question: "Which gender(s) are you into?",
@@ -277,7 +297,8 @@ export const questions:allQuestions[] = [
             return prof
         },
         skipQuestion: () => false,
-        values: (prof) => prof.data.metas.orientation
+        values: (prof) => prof.data.metas.orientation,
+        major: "data"
     } as question<gender>,
     {
         question: "How much are you into foreplay",
@@ -297,8 +318,9 @@ export const questions:allQuestions[] = [
         },
         skipQuestion: (prof) => prof.weights.sexual.IntoForeplay === 0,
         values: (prof) => ({IntoForeplay: prof.data.intoForeplay}),
+        major: "data",
+        sub: "intoForeplay"
     } as question<"IntoForeplay">,
-
     {
         type: "Title",
         content: "Dream Partner",
@@ -331,6 +353,8 @@ export const questions:allQuestions[] = [
         },
         skipQuestion: (prof) => prof.weights.personality.Annoying === 0 || prof.weights.major.Personality === 0,
         values: (prof) => prof.pref.annoying,
+        major: "pref",
+        sub: "annoying"
     } as question<annoying>,
     {
         question: "What do you prefer in your partner?",
@@ -353,7 +377,9 @@ export const questions:allQuestions[] = [
             profile.pref.infp = Object.assign(profile.pref.infp, inp)
             return profile
         },
-        values: (prof) => prof.pref.infp
+        values: (prof) => prof.pref.infp,
+        major: "pref",
+        sub: "infp"
     } as sliderQuestion<infpRes>,
     {
         question: "What do you prefer in your partner?",
@@ -377,7 +403,9 @@ export const questions:allQuestions[] = [
             profile.pref.personality = Object.assign(profile.pref.infp, inp)
             return profile
         },
-        values: (prof) => prof.pref.personality
+        values: (prof) => prof.pref.personality,
+        major: "pref",
+        sub: "personality"
     } as sliderQuestion<keyof profile['pref']['personality']>,
     {
         question: "What character alignment are you looking for in your partner?",
@@ -395,7 +423,9 @@ export const questions:allQuestions[] = [
             return prof
         },
         skipQuestion: (prof) => prof.weights.major.Personality === 0 || prof.weights.personality.CharacterAlignment === 0,
-        values: (prof) => prof.pref.characterAlignment
+        values: (prof) => prof.pref.characterAlignment,
+        major: "pref",
+        sub: "characterAlignment"
     },
     {
         question: "Where on the political compass is your dream partner?",
@@ -443,6 +473,8 @@ export const questions:allQuestions[] = [
         },
         skipQuestion: (prof) => prof.weights.major.Traits == 0 || prof.weights.traits.MatchPolitical === 0 || prof.weights.political.MatchCompass === 0,
         values: (prof) => prof.pref.political.MatchCompass,
+        major: "pref",
+        sub: "political"
     } as graphQuestion,
     {
         question: "What makes someone hot?",
@@ -465,7 +497,9 @@ export const questions:allQuestions[] = [
             return prof
         },
         skipQuestion: (prof) => prof.weights.major.Looks === 0,
-        values: (prof) => prof.pref.looks
+        values: (prof) => prof.pref.looks,
+        major: "pref",
+        sub: "looks"
     } as question<keyof profile['pref']['looks']>,
     {
         question: "What makes someone's face hot?",
@@ -487,7 +521,9 @@ export const questions:allQuestions[] = [
             return prof
         },
         skipQuestion: (prof) => prof.weights.major.Looks === 0 || prof.weights.looks.MatchFace === 0,
-        values: (prof) => prof.pref.looksFace
+        values: (prof) => prof.pref.looksFace,
+        major: "pref",
+        sub: "looksFace"
     } as question<keyof profile['pref']['looksFace']>,
     {
         question: "How thirsty do you want your partner to be?",
@@ -504,6 +540,8 @@ export const questions:allQuestions[] = [
         },
         values: (prof) => ({Thirst: prof.pref.sexual.Thirst}),
         skipQuestion: (prof) => prof.weights.major.SexualCompatability === 0 || prof.weights.sexual.Thirst === 0,
+        major: "pref",
+        sub: "sexual"
     } as question<"Thirst">,
     {
         question: "How plolitically involved do you want your partner?",
@@ -519,7 +557,9 @@ export const questions:allQuestions[] = [
             return prof
         },
         skipQuestion: (prof) => prof.weights.major.Traits === 0 || prof.weights.traits.MatchPolitical === 0 || prof.weights.political.politicalInvolvement === 0,
-        values: (prof) => ({PolInvolv: prof.pref.political.politicalInvolvement})
+        values: (prof) => ({PolInvolv: prof.pref.political.politicalInvolvement}),
+        major: "pref",
+        sub: "political"
     } as question<"PolInvolv">,
     {
         question: "How Smart should your partner be?",
@@ -542,7 +582,9 @@ export const questions:allQuestions[] = [
             return prof
         },
         skipQuestion: (prof) => prof.weights.major.Traits === 0 || (prof.weights.traits.StreetSmart + prof.weights.traits.BookSmart) === 0,
-        values: (prof) => ({BookSmart: prof.pref.traits.BookSmart, StreetSmart: prof.pref.traits.StreetSmart})
+        values: (prof) => ({BookSmart: prof.pref.traits.BookSmart, StreetSmart: prof.pref.traits.StreetSmart}),
+        major: "pref",
+        sub: "traits"
     } as question<"BookSmart" | "StreetSmart">,
     {
         question: "What makes someone have good traits?",
@@ -564,7 +606,9 @@ export const questions:allQuestions[] = [
             return prof
         },
         skipQuestion: (prof) => ((1-prof.weights.traits.BookSmart-prof.weights.traits.StreetSmart) === 0 || prof.weights.major.Traits === 0),
-        values: (prof) => prof.pref.traits
+        values: (prof) => prof.pref.traits,
+        major: "pref",
+        sub: "traits"
     } as question<keyof Exclude<profile['pref']['traits'], "BookSmart" | "StreetSmart">>,
     {
         type: "Title",

@@ -23,7 +23,7 @@ const Question:FunctionComponent<{
     profile: profile,
     question: allQuestions,
     changeQ: (inp:boolean) => void,
-    setProfile: (prof: profile) => void,
+    setProfile: (prof: profile, major:keyof profile, sub?:string) => void,
     first: boolean,
     last: boolean,
 }> = (({ profile, question, setProfile, first, last, changeQ }) => {
@@ -56,7 +56,7 @@ const Question:FunctionComponent<{
         : <Fragment>
             <a class="row" style={{marginTop: "7vh", textDecoration: question.a ? "underline #6F42C2" : "", textUnderlineOffset: "0.3vh"}} href={question.a} target={"_blank"} rel="noreferrer"><h1>{question.question}</h1></a>
             {
-                question.type == "input" ? <InputQuestion dataInit={question.values(profile)} filt={question.filter} inp={(inp) => setProfile(question.parse(inp, profile))} />
+                question.type == "input" ? <InputQuestion dataInit={question.values(profile)} filt={question.filter} inp={(inp) => setProfile(question.parse(inp, profile), question.major, question.sub)} />
                 : question.type == "pie" ?
                     <PieQuestion inp={
                     (inp:Record<string, unknown>) => {
@@ -66,7 +66,9 @@ const Question:FunctionComponent<{
                             question.parse(
                             Object.fromEntries(Object.keys(inp).map(v => {
                                 return [reverseAliases[v], Math.round((inp[v] as number)*10000)/10000]
-                            })), profile)
+                            })), profile),
+                            question.major,
+                            question.sub
                     )}}
                     dataInit={(() => {
                         const aliases = question.optionsAndAliases(profile)
@@ -76,13 +78,13 @@ const Question:FunctionComponent<{
                         }))
                     })()} />
                 : question.type == "graph" ?
-                    <GraphQuestion labels={question.labels} inp={(ii) => setProfile(question.parse(ii, profile))} dataInit={question.values(profile)} />
+                    <GraphQuestion labels={question.labels} inp={(ii) => setProfile(question.parse(ii, profile), question.major, question.sub)} dataInit={question.values(profile)} />
                 : question.type == "slider" ?
-                    <SliderQuestion labels={question.optionsAndAliases(profile)} dataInit={question.values(profile)} inp={(inp) => setProfile(question.parse(inp, profile))} />
+                    <SliderQuestion labels={question.optionsAndAliases(profile)} dataInit={question.values(profile)} inp={(inp) => setProfile(question.parse(inp, profile), question.major, question.sub)} />
                 : question.type == "radial" ?
-                    <RadialQuestion labels={question.optionsAndAliases(profile)} dataInit={question.values(profile)} inp={(inp) => setProfile(question.parse(inp, profile))} />
+                    <RadialQuestion labels={question.optionsAndAliases(profile)} dataInit={question.values(profile)} inp={(inp) => setProfile(question.parse(inp, profile), question.major, question.sub)} />
                 : question.type == "checkbox" ?
-                    <CheckboxQuestion labels={question.optionsAndAliases(profile)} dataInit={question.values(profile)} inp={(inp) => setProfile(question.parse(inp, profile))} />
+                    <CheckboxQuestion labels={question.optionsAndAliases(profile)} dataInit={question.values(profile)} inp={(inp) => setProfile(question.parse(inp, profile), question.major, question.sub)} />
                 : <Fragment />
             }
         </Fragment>

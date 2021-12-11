@@ -110,7 +110,7 @@ const GraphQuestion:FunctionComponent<{
         //
         // Lines at the end of Axis
         //
-        
+
         ctx.lineWidth = 3
 
         ctx.beginPath()

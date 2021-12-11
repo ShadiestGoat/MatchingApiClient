@@ -39,7 +39,9 @@ export const questionsHere:Record<string, question[]> = {
                 OpenMinded: (prof.data.ratings.matao ?? {}).OpenMinded ?? 0.5,
                 StreetSmart: (prof.data.ratings.matao ?? {}).StreetSmart ?? 0.5,
                 Thirst: (prof.data.ratings.matao ?? {}).Thirst ?? 0.5,
-            })
+            }),
+            major: "data",
+            sub: "ratings"
         } as question<"Mature" | "Creepy" | "OpenMinded" | "StreetSmart" | "Thirst">,
         {
             question: "Rate Dan on these qualities :)",
@@ -72,7 +74,9 @@ export const questionsHere:Record<string, question[]> = {
                 Funny: (prof.data.ratings.dan ?? {}).Funny ?? 0.5,
                 Hygenic: (prof.data.ratings.dan ?? {}).Hygenic ?? 0.5,
                 Mature: (prof.data.ratings.dan ?? {}).Mature ?? 0.5,
-            })
+            }),
+            major: "data",
+            sub: "ratings"
         } as question<"Cute" | "Funny" | "Mature" | "Hygenic">,
         {
             question: "Rate Zekuan on these qualities :)",
@@ -105,7 +109,9 @@ export const questionsHere:Record<string, question[]> = {
                 Muscularity: (prof.data.ratings.zekuan ?? {}).Muscularity ?? 0.5,
                 Funny: (prof.data.ratings.zekuan ?? {}).Funny ?? 0.5,
                 Thirst: (prof.data.ratings.zekuan ?? {}).Thirst ?? 0.5,
-            })
+            }),
+            major: "data",
+            sub: "ratings"
         } as question<"Cute" | "Muscularity" | "Funny" | "Thirst">,
         {
             question: "What is the character alignment of Dan?",
@@ -131,7 +137,9 @@ export const questionsHere:Record<string, question[]> = {
             values: (prof) => (prof.data.ratings.dan?.char ?? {
                 x: 0,
                 y: 0
-            })
+            }),
+            major: "data",
+            sub: "ratings"
         },
     ],
     // MATAO
@@ -172,7 +180,9 @@ export const questionsHere:Record<string, question[]> = {
                 HotHair: (prof.data.ratings.bruna ?? {}).HotHiar ?? 0.5,
                 GoodFashion: (prof.data.ratings.bruna ?? {}).GoodFashion ?? 0.5,
                 Thirst: (prof.data.ratings.bruna ?? {}).Thirst ?? 0.5,
-            })
+            }),
+            major: "data",
+            sub: "ratings"
         } as question<"HotHair" | "Creepy" | "GoodFashion" | "Thirst" | "HotEyes">,
         {
             question: "Rate Dan on these qualities :)",
@@ -205,7 +215,9 @@ export const questionsHere:Record<string, question[]> = {
                 Funny: (prof.data.ratings.dan ?? {}).Funny ?? 0.5,
                 Egoistic: (prof.data.ratings.dan ?? {}).Egoistic ?? 0.5,
                 Mature: (prof.data.ratings.dan ?? {}).Mature ?? 0.5,
-            })
+            }),
+            major: "data",
+            sub: "ratings"
         } as question<"Cute" | "Funny" | "Mature" | "Egoistic">,
         {
             question: "Rate Rayaan on these qualities :)",
@@ -238,7 +250,9 @@ export const questionsHere:Record<string, question[]> = {
                 HotEyes: (prof.data.ratings.rayaan ?? {}).HotEyes ?? 0.5,
                 Funny: (prof.data.ratings.rayaan ?? {}).Funny ?? 0.5,
                 Thirst: (prof.data.ratings.rayaan ?? {}).Thirst ?? 0.5,
-            })
+            }),
+            major: "data",
+            sub: "ratings"
         } as question<"Cute" | "HotEyes" | "Funny" | "Thirst">,
         {
             question: "What is the character alignment of Zekuan?",
@@ -264,7 +278,9 @@ export const questionsHere:Record<string, question[]> = {
             values: (prof) => (prof.data.ratings.zekuan?.char ?? {
                 x: 0,
                 y: 0
-            })
+            }),
+            major: "data",
+            sub: "ratings"
         },
     ],
     // SHADY
@@ -293,7 +309,9 @@ export const questionsHere:Record<string, question[]> = {
             values: (prof) => ((prof.data.ratings.zengyi ?? {}).char ?? {
                 x: 0,
                 y: 0
-            })
+            }),
+            major: "data",
+            sub: "ratings"
         },
     ], // I will rate everything else hehehehe
     // Zeki
@@ -334,7 +352,9 @@ export const questionsHere:Record<string, question[]> = {
                 Thirst: (prof.data.ratings.zengyi ?? {}).Thirst ?? 0.5,
                 Cute: (prof.data.ratings.zengyi ?? {}).Cute ?? 0.5,
                 TechSavy: (prof.data.ratings.zengyi ?? {}).TechSavy ?? 0.5,
-            })
+            }),
+            major: "data",
+            sub: "ratings"
         } as question<"OpenMinded" | "Rich" | "Cute" | "Thirst" | "TechSavy">,
         {
             question: "Rate Bruna on these qualities :)",
@@ -367,7 +387,9 @@ export const questionsHere:Record<string, question[]> = {
                 HotEyes: (prof.data.ratings.bruna ?? {}).HotEyes ?? 0.5,
                 Thirst: (prof.data.ratings.bruna ?? {}).Thirst ?? 0.5,
                 HotHair: (prof.data.ratings.bruna ?? {}).HotHair ?? 0.5,
-            })
+            }),
+            major: "data",
+            sub: "ratings"
         } as question<"Cute" | "HotEyes" | "Thirst" | "HotHair">,
         {
             question: "Rate Rayaan on these qualities :)",
@@ -400,7 +422,9 @@ export const questionsHere:Record<string, question[]> = {
                 HotEyes: (prof.data.ratings.rayaan ?? {}).HotEyes ?? 0.5,
                 Funny: (prof.data.ratings.rayaan ?? {}).Funny ?? 0.5,
                 Thirst: (prof.data.ratings.rayaan ?? {}).Thirst ?? 0.5,
-            })
+            }),
+            major: "data",
+            sub: "ratings"
         } as question<"Cute" | "HotEyes" | "Funny" | "Thirst">,
         {
             question: "What is the character alignment of Matao?",
@@ -426,7 +450,9 @@ export const questionsHere:Record<string, question[]> = {
             values: (prof) => ((prof.data.ratings.matao ?? {}).char ?? {
                 x: 0.5,
                 y: 0.5
-            })
+            }),
+            major: "data",
+            sub: "ratings"
         },
 
     ],
@@ -468,7 +494,9 @@ export const questionsHere:Record<string, question[]> = {
                 Thirst: (prof.data.ratings.matao ?? {}).Thirst ?? 0.5,
                 Cute: (prof.data.ratings.matao ?? {}).Cute ?? 0.5,
                 StreetSmart: (prof.data.ratings.matao ?? {}).StreetSmart ?? 0.5,
-            })
+            }),
+            major: "data",
+            sub: "ratings"
         } as question<"OpenMinded" | "Funny" | "Cute" | "Thirst" | "StreetSmart">,
         {
             question: "Rate Zengyi on these qualities :)",
@@ -501,7 +529,9 @@ export const questionsHere:Record<string, question[]> = {
                 StreetSmart: (prof.data.ratings.bruna ?? {}).StreetSmart ?? 0.5,
                 Thirst: (prof.data.ratings.bruna ?? {}).Thirst ?? 0.5,
                 HotHair: (prof.data.ratings.bruna ?? {}).HotHair ?? 0.5,
-            })
+            }),
+            major: "data",
+            sub: "ratings"
         } as question<"Cute" | "StreetSmart" | "Thirst" | "HotHair">,
         {
             question: "What is the character alignment of Rayaan?",
@@ -527,7 +557,9 @@ export const questionsHere:Record<string, question[]> = {
             values: (prof) => (prof.data.ratings.rayaan?.char ?? {
                 x: 0.5,
                 y: 0.5
-            })
+            }),
+            major: "data",
+            sub: "ratings"
         },
     ],
     // Rayaan
@@ -568,7 +600,9 @@ export const questionsHere:Record<string, question[]> = {
                 Thirst: (prof.data.ratings.zekuan ?? {}).Thirst ?? 0.5,
                 Cute: (prof.data.ratings.zekuan ?? {}).Cute ?? 0.5,
                 StreetSmart: (prof.data.ratings.zekuan ?? {}).StreetSmart ?? 0.5,
-            })
+            }),
+            major: "data",
+            sub: "ratings"
         } as question<"OpenMinded" | "Funny" | "Cute" | "Thirst" | "StreetSmart">,
         {
             question: "Rate Zengyi on these qualities :)",
@@ -606,7 +640,9 @@ export const questionsHere:Record<string, question[]> = {
                 Thirst: (prof.data.ratings.zengyi ?? {}).Thirst ?? 0.5,
                 Cute: (prof.data.ratings.zengyi ?? {}).Cute ?? 0.5,
                 StreetSmart: (prof.data.ratings.zengyi ?? {}).StreetSmart ?? 0.5,
-            })
+            }),
+            major: "data",
+            sub: "ratings"
         } as question<"OpenMinded" | "Funny" | "Cute" | "Thirst" | "StreetSmart">,
 
         {
@@ -640,11 +676,10 @@ export const questionsHere:Record<string, question[]> = {
                 StreetSmart: (prof.data.ratings.bruna ?? {}).StreetSmart ?? 0.5,
                 Thirst: (prof.data.ratings.bruna ?? {}).Thirst ?? 0.5,
                 HotHair: (prof.data.ratings.bruna ?? {}).HotHair ?? 0.5,
-            })
+            }),
+            major: "data",
+            sub: "ratings"
         } as question<"Cute" | "StreetSmart" | "Thirst" | "HotHair">,
-
-
-
         {
             question: "What is the character alignment of Bruna?",
             type: "graph",
@@ -669,7 +704,9 @@ export const questionsHere:Record<string, question[]> = {
             values: (prof) => (prof.data.ratings.bruna?.char ?? {
                 x: 0.5,
                 y: 0.5
-            })
+            }),
+            major: "data",
+            sub: "ratings"
         },
     ],
 }

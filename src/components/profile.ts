@@ -88,7 +88,7 @@ export type profile = {
             politicalInvolvement: number,
             MatchCompass: coords
         },
-        sexual: Record<Exclude<sexualCompatability, "MatchTop" | "MatchBDSM">, number>,
+        sexual: Record<Exclude<sexualCompatability, "MatchTop" | "MatchBDSM" | "IntoForeplay">, number>,
         looks: Record<Exclude<looks, "MatchFace">, number>,
         personality: Record<Exclude<personality, "Annoying" | "MatchINFP" | "CharacterAlignment">, number>,
 
@@ -169,7 +169,6 @@ export const defaultProfile:profile = {
             politicalInvolvement: 0.5
         },
         sexual: {
-            IntoForeplay: 0.5,
             Thirst: 0.5
         },
         traits: {
