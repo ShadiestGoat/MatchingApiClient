@@ -521,14 +521,14 @@ export const questionsHere:Record<string, question[]> = {
             }),
             skipQuestion: () => false,
             parse: (inp, prof) => {
-                prof.data.ratings.bruna = Object.assign(prof.data.ratings.bruna ?? {}, inp)
+                prof.data.ratings.zengyi = Object.assign(prof.data.ratings.bruna ?? {}, inp)
                 return prof
             },
             values: (prof) => ({
-                Cute: (prof.data.ratings.bruna ?? {}).Cute ?? 0.5,
-                StreetSmart: (prof.data.ratings.bruna ?? {}).StreetSmart ?? 0.5,
-                Thirst: (prof.data.ratings.bruna ?? {}).Thirst ?? 0.5,
-                HotHair: (prof.data.ratings.bruna ?? {}).HotHair ?? 0.5,
+                Cute: (prof.data.ratings.zengyi ?? {}).Cute ?? 0.5,
+                StreetSmart: (prof.data.ratings.zengyi ?? {}).StreetSmart ?? 0.5,
+                Thirst: (prof.data.ratings.zengyi ?? {}).Thirst ?? 0.5,
+                HotHair: (prof.data.ratings.zengyi ?? {}).HotHair ?? 0.5,
             }),
             major: "data",
             sub: "ratings"
