@@ -62,7 +62,7 @@ const App: FunctionalComponent = () => {
         function loopOver(cur:Record<string, unknown>):Record<string, unknown> {
             Object.keys(cur).forEach((k) => {
                 if (typeof cur[k] == "number") {
-                    cur[k] = Math.round((cur[k] as number)*10000)/100
+                    cur[k] = Math.round((cur[k] as number)*10000)/10000
                 } else if (typeof cur[k] == "object") {
                     cur[k] = loopOver(cur[k] as Record<string, unknown>)
                 }

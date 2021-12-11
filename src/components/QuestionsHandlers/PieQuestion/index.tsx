@@ -2,7 +2,7 @@ import { FunctionComponent } from "preact"
 import { useCallback, useEffect, useRef, useState } from "preact/hooks"
 import { useGlobalListener } from "../../../tools"
 import style from "../style.css"
-
+// TODO: Clean up the rounding here!
 type data2 = {
     /** 0-1 */
     percent: number,

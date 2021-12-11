@@ -158,7 +158,7 @@ const SliderQuestion:FunctionComponent<{
                 height: "27vw",
                 width: "27vw"
             }}>
-                <canvas class="col" height={window.innerWidth/100 * 27} width={window.innerWidth/100 * 27} ref={cnvsRef}
+                <canvas class="col" height={window.innerWidth * 0.27} width={window.innerWidth * 0.27} ref={cnvsRef}
                     onClick={(e) => {
                         const canvs = cnvsRef.current
                         if (!canvs) return
