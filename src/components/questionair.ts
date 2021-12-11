@@ -509,6 +509,7 @@ export const questions:allQuestions[] = [
                 ["HotEyes", "Ugly & Basic Eyes", "Extremely Pretty Eeyes"],
                 ["HotHair", "Disgusting Hair", "Hot Hair"],
                 ["SharpChin", "A circle chin", "Chin Could Cut Wood"],
+                ["LittleAcne", "Loads of acne", "No Acne"],
             ] as [keyof profile['pref']['looksFace'], string, string][]).filter(
                 v => prof.weights.looksFace[v[0]] !== 0
             ).map(v => [v[0], {
