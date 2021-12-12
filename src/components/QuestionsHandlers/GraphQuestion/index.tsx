@@ -78,14 +78,14 @@ const GraphQuestion:FunctionComponent<{
         ctx.strokeStyle = "#959899"
         ctx.setLineDash([5, 10])
         ctx.beginPath()
-        ctx.moveTo(data.x + cX, 0)
-        ctx.lineTo(data.x + cX, canvs.height)
+        ctx.moveTo(data.x * canvs.width, 0)
+        ctx.lineTo(data.x * canvs.width, canvs.height)
         ctx.stroke()
         ctx.closePath()
 
         ctx.beginPath()
-        ctx.moveTo(0, data.y + cY)
-        ctx.lineTo(canvs.width, data.y + cY)
+        ctx.moveTo(0, data.y * canvs.width)
+        ctx.lineTo(canvs.width, data.y * canvs.width)
         ctx.stroke()
         ctx.closePath()
         ctx.setLineDash([])
