@@ -60,6 +60,23 @@ export type question<Keys extends string = any> = inputQuestion | pieQuestion<Ke
 
 export type allQuestions = question | {type: "Title", content: string, subtitle?: string}
 
+const genderEnum:Record<gender, number> = {
+    Male: 0,
+    Female: 1,
+    NonBinary: 2,
+    Fluid: 3,
+    None: 4,
+    Other: 5
+}
+const genderEnumReverse:Record<number, gender> = {
+    0: "Male",
+    1: "Female",
+    2: "NonBinary",
+    3: "Fluid",
+    4: "None",
+    5: "Other"
+}
+
 export const questions:allQuestions[] = [
     {
         type: "Title",
@@ -260,11 +277,11 @@ export const questions:allQuestions[] = [
             Other: "Other"
         }),
         parse: (inp, prof) => {
-            prof.data.metas.gender = inp
+            prof.data.metas.gender = genderEnum[inp]
             return prof
         },
         skipQuestion: () => false,
-        values: (prof) => prof.data.metas.gender,
+        values: (prof) => genderEnumReverse[prof.data.metas.gender],
         major: "data",
     } as question<gender>,
     {

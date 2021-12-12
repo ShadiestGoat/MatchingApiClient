@@ -72,7 +72,7 @@ export function profileCoordsToCoords(coords:profileCoords):coords {
 export type profile = {
     data: {
         metas: {
-            gender: gender,
+            gender: number,
             /**
              * 0 - Monogomous
              * 1 - NonMonogomous
