@@ -123,7 +123,7 @@ export type profile = {
 export const defaultProfile:profile = {
     data: {
         metas: {
-            gender: "None",
+            gender: 4,
             monogomy: 0,
             orientation: {
                 Female: false,
