@@ -418,7 +418,7 @@ export const questions:allQuestions[] = [
         ),
         skipQuestion: (prof) => prof.weights.major.Personality === 0 || Object.values(prof.weights.personality).reduce((a, b) => a+b) === 0,
         parse: (inp, profile) => {
-            profile.pref.personality = Object.assign(profile.pref.infp, inp)
+            profile.pref.personality = Object.assign(profile.pref.personality, inp)
             return profile
         },
         values: (prof) => prof.pref.personality,
