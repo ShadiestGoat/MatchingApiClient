@@ -399,7 +399,7 @@ const PieQuestion:FunctionComponent<{
         setData(newData)
         setTarget(false)
     }, [data, normalizeAngle, setData])
-    console.log(data)
+
     return <div class="row" style={{height: "55vh", width: "100vw", marginTop: "3vh", alignItems: "center"}}>
         <div class="col" style={{width: "21.5%", justifyContent: "space-around"}}>
             {
@@ -411,6 +411,7 @@ const PieQuestion:FunctionComponent<{
                             <input class={`row ${style.input}`} style={{width: "70%"}} value={`${Math.round(v.percent*10000)/100}`} onChange={(e) => {
                                 e.stopPropagation()
                                 const targ = e.target as HTMLInputElement
+                                if (Number.isNaN(parseInt(targ.value, 10))) return
                                 shiftAngleByPercent(v.i, parseFloat(targ.value) <= 0 ? 0 : parseFloat(targ.value) >= 100 ? 1 : Math.round(parseFloat(targ.value)*100)/10000)
                             }} />
                         </div>
@@ -433,6 +434,7 @@ const PieQuestion:FunctionComponent<{
                             <h2 class="row" style={{width: "100%"}}>{v.label}</h2>
                             <input class={`row ${style.input}`} style={{width: "70%"}} value={`${Math.round(v.percent*10000)/100}`} onChange={(e) => {
                                 const targ = e.target as HTMLInputElement
+                                if (Number.isNaN(parseInt(targ.value, 10))) return
                                 shiftAngleByPercent(v.i, parseFloat(targ.value) <= 0 ? 0 : parseFloat(targ.value) >= 100 ? 1 : Math.round(parseFloat(targ.value)*100)/10000)
                             }} />
                         </div>
