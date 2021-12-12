@@ -21,6 +21,7 @@ const InputQuestion:FunctionComponent<{
     return <Fragment>
         <div class={`row`} style={{height: "55vh", width: "100vw", alignItems: "center"}}>
             <input value={data} onInput={(e) => {
+                e.stopPropagation()
                 setData((e.target as HTMLInputElement).value)
             }} class={`${style.input} ${err ? transStyle.wrong : ''}`} style={{
                 height: "15vh",
