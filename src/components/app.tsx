@@ -35,6 +35,7 @@ const App: FunctionalComponent = () => {
                 "https://bigboyapi.shadygoat.eu",
                 {
                     path,
+                    V,
                     prof: curProfile
                 }
             )
