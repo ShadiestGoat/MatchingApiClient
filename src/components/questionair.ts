@@ -370,8 +370,8 @@ export const questions:allQuestions[] = [
                 ["Egoistic", "No ego", "Extreme egoism"],
                 ["GoodTemper", "Easy to Anger", "Hard to anger"],
                 ["Mature", "Immature", "Very Mature"],
-                ["Selfish", "Selfish", "Selfless"],
-                ["Talkative", "Extremely Talkative", "Mute"],
+                ["Selfish", "Selfless", "Selfless"],
+                ["Talkative", "Mute", "Extremely Talkative"],
             ] as [annoying, string, string][]).filter(
                 v => prof.weights.annoying[v[0]] !== 0
             ).map(v => ([
@@ -543,7 +543,7 @@ export const questions:allQuestions[] = [
             ([
                 ["HotEyes", "Ugly & Basic Eyes", "Extremely Pretty Eeyes"],
                 ["HotHair", "Disgusting Hair", "Hot Hair"],
-                ["SharpChin", "A circle chin", "Chin Could Cut Wood"],
+                ["SharpChin", "Round & Blunt Chin", "Chin Could Cut"],
                 ["LittleAcne", "Loads of acne", "No Acne"],
             ] as [keyof profile['pref']['looksFace'], string, string][]).filter(
                 v => prof.weights.looksFace[v[0]] !== 0
