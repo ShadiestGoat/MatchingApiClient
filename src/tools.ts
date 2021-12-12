@@ -10,3 +10,7 @@ export function useGlobalListener<K extends keyof WindowEventMap>(type:K, handle
       return () => removeEventListener(type, proxy, opts);
     }, [type, capture, passive, proxy]);
 }
+
+export function roundPercent(percent:number):number {
+    return Math.round(percent*10000)/10000
+}

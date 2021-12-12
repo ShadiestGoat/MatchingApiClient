@@ -1,8 +1,8 @@
 import { FunctionComponent } from "preact"
 import { useCallback, useEffect, useRef, useState } from "preact/hooks"
-import { useGlobalListener } from "../../../tools"
+import { roundPercent, useGlobalListener } from "../../../tools"
 import style from "../style.css"
-// TODO: Clean up the rounding here!
+
 type data2 = {
     /** 0-1 */
     percent: number,
@@ -31,7 +31,7 @@ const PieQuestion:FunctionComponent<{
     const normalizeAngle = useCallback((angle:number):number => {
         if (angle < 0) return TOT + angle
         if (angle >= TOT) return normalizeAngle(angle - TOT)
-        return Math.round(angle*1000)/1000
+        return angle
     }, [])
 
     let curAngle = BeginRenderAt
@@ -399,7 +399,7 @@ const PieQuestion:FunctionComponent<{
         setData(newData)
         setTarget(false)
     }, [data, normalizeAngle, setData])
-
+    console.log(data)
     return <div class="row" style={{height: "55vh", width: "100vw", marginTop: "3vh", alignItems: "center"}}>
         <div class="col" style={{width: "21.5%", justifyContent: "space-around"}}>
             {
@@ -408,7 +408,7 @@ const PieQuestion:FunctionComponent<{
                     return <label key={v.label} class="row">
                         <div class="col" style={{alignItems: "center", marginTop: "5%"}}>
                             <h2 class="row" style={{width: "100%"}}>{v.label}</h2>
-                            <input class={`row ${style.input}`} style={{width: "70%"}} value={`${Math.round(v.percent * 10000)/100}`} onChange={(e) => {
+                            <input class={`row ${style.input}`} style={{width: "70%"}} value={`${Math.round(v.percent*10000)/100}`} onChange={(e) => {
                                 e.stopPropagation()
                                 const targ = e.target as HTMLInputElement
                                 shiftAngleByPercent(v.i, parseFloat(targ.value) <= 0 ? 0 : parseFloat(targ.value) >= 100 ? 1 : Math.round(parseFloat(targ.value)*100)/10000)
@@ -431,7 +431,7 @@ const PieQuestion:FunctionComponent<{
                     return <label key={v.label} class="row">
                         <div class="col" style={{alignItems: "center", marginTop: "5%"}}>
                             <h2 class="row" style={{width: "100%"}}>{v.label}</h2>
-                            <input class={`row ${style.input}`} style={{width: "70%"}} value={`${Math.round(v.percent * 10000)/100}`} onChange={(e) => {
+                            <input class={`row ${style.input}`} style={{width: "70%"}} value={`${Math.round(v.percent*10000)/100}`} onChange={(e) => {
                                 const targ = e.target as HTMLInputElement
                                 shiftAngleByPercent(v.i, parseFloat(targ.value) <= 0 ? 0 : parseFloat(targ.value) >= 100 ? 1 : Math.round(parseFloat(targ.value)*100)/10000)
                             }} />

@@ -65,7 +65,7 @@ const Question:FunctionComponent<{
                         setProfile(
                             question.parse(
                             Object.fromEntries(Object.keys(inp).map(v => {
-                                return [reverseAliases[v], Math.round((inp[v] as number)*10000)/10000]
+                                return [reverseAliases[v], inp[v] as number]
                             })), profile),
                             question.major,
                             question.sub

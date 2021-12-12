@@ -5,6 +5,7 @@ import { defaultProfile, profile } from './profile';
 import { allQuestions, question, questions } from './questionair';
 import { questionsHere } from './additionalQs';
 import axios from 'axios';
+import { roundPercent } from '../tools';
 
 const V = "1.3.1"
 
@@ -62,7 +63,7 @@ const App: FunctionalComponent = () => {
         function loopOver(cur:Record<string, unknown>):Record<string, unknown> {
             Object.keys(cur).forEach((k) => {
                 if (typeof cur[k] == "number") {
-                    cur[k] = Math.round((cur[k] as number)*10000)/10000
+                    cur[k] = roundPercent(cur[k] as number)
                 } else if (typeof cur[k] == "object") {
                     cur[k] = loopOver(cur[k] as Record<string, unknown>)
                 }
