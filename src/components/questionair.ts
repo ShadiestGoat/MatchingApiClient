@@ -1,4 +1,4 @@
-import { annoying, infpRes, looks, looksFace, majorMatch, personality, profile, traits, gender } from "./profile"
+import { annoying, infpRes, looks, looksFace, majorMatch, personality, profile, traits, gender, profileCoordsToCoords, coordsToProfileC } from "./profile"
 
 type baseQuestion<T> = {
     question: string,
@@ -437,11 +437,11 @@ export const questions:allQuestions[] = [
             }
         },
         parse: (inp, prof) => {
-            prof.pref.characterAlignment = inp
+            prof.pref.characterAlignment = coordsToProfileC(inp)
             return prof
         },
         skipQuestion: (prof) => prof.weights.major.Personality === 0 || prof.weights.personality.CharacterAlignment === 0,
-        values: (prof) => prof.pref.characterAlignment,
+        values: (prof) => profileCoordsToCoords(prof.pref.characterAlignment),
         major: "pref",
         sub: "characterAlignment"
     },
@@ -486,11 +486,11 @@ export const questions:allQuestions[] = [
             ]
         },
         parse: (inp, prof) => {
-            prof.pref.political.MatchCompass = inp
+            prof.pref.political.MatchCompass = coordsToProfileC(inp)
             return prof
         },
         skipQuestion: (prof) => prof.weights.major.Traits == 0 || prof.weights.traits.MatchPolitical === 0 || prof.weights.political.MatchCompass === 0,
-        values: (prof) => prof.pref.political.MatchCompass,
+        values: (prof) => profileCoordsToCoords(prof.pref.political.MatchCompass),
         major: "pref",
         sub: "political"
     } as graphQuestion,

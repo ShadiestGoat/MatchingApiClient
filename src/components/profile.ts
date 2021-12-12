@@ -57,6 +57,18 @@ export type gender = "Male" |
                      "Other" |
                      "None"
 
+export type profileCoords = [number, number]
+
+export function coordsToProfileC(coords:coords):profileCoords {
+    return [coords.x, coords.y]
+}
+export function profileCoordsToCoords(coords:profileCoords):coords {
+    return {
+        x: coords[0],
+        y: coords[1]
+    }
+}
+
 export type profile = {
     data: {
         metas: {
@@ -76,7 +88,7 @@ export type profile = {
             orientation: Record<gender, boolean>,
         },
         intoForeplay: number,
-        ratings: Record<string, Record<string, number> & {char: coords}>
+        ratings: Record<string, Record<string, number> & {char: profileCoords}>
         politicalCompass: string,
         infp: string,
     },
@@ -87,13 +99,13 @@ export type profile = {
         infp: Record<infpRes, number>,
         political: {
             politicalInvolvement: number,
-            MatchCompass: coords
+            MatchCompass: profileCoords
         },
         sexual: Record<Exclude<sexualCompatability, "MatchTop" | "MatchBDSM" | "IntoForeplay">, number>,
         looks: Record<Exclude<looks, "MatchFace">, number>,
         personality: Record<Exclude<personality, "Annoying" | "MatchINFP" | "CharacterAlignment">, number>,
 
-        characterAlignment: coords
+        characterAlignment: profileCoords
     },
     weights: {
         annoying: Record<annoying, number>,
@@ -164,10 +176,7 @@ export const defaultProfile:profile = {
             OpenMinded: 0.5,
         },
         political: {
-            MatchCompass: {
-                x: 0.5,
-                y: 0.5
-            },
+            MatchCompass: [0.5, 0.5],
             politicalInvolvement: 0.5
         },
         sexual: {
@@ -180,10 +189,7 @@ export const defaultProfile:profile = {
             Rich: 0.5,
             TechSavy: 0.5,
         },
-        characterAlignment: {
-            x: 0.5,
-            y: 0.5
-        }
+        characterAlignment: [0.5, 0.5]
     },
     weights: {
         annoying: {
