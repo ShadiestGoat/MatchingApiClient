@@ -253,6 +253,19 @@ export const questions:allQuestions[] = [
         major: "data",
     },
     {
+        question: "Do the FULL BDSM Test & paste the resulting link:",
+        type: "input",
+        skipQuestion: () => false,
+        filter: (str) => str.trim().startsWith('https://bdsmtest.org/r/'),
+        a: "https://bdsmtest.org",
+        parse: (inp, prof) => {
+            prof.data.bdsm = inp
+            return prof
+        },
+        values: (prof) => prof.data.bdsm,
+        major: "data",
+    },
+    {
         question: "Do the political compass test & paste the resulting link:",
         type: "input",
         skipQuestion: () => false,

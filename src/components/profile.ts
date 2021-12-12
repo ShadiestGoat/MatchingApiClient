@@ -90,6 +90,7 @@ export type profile = {
         intoForeplay: number,
         ratings: Record<string, Record<string, number> & {char: profileCoords}>
         politicalCompass: string,
+        bdsm: string,
         infp: string,
     },
     pref: {
@@ -138,6 +139,7 @@ export const defaultProfile:profile = {
         intoForeplay: 0.5,
         infp: "",
         politicalCompass: "",
+        bdsm: "",
         ratings: {}
     },
     pref: {
