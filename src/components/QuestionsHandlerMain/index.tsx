@@ -47,7 +47,7 @@ const Question:FunctionComponent<{
                     question.subtitle ?
                         <div class="col" style={{}}>
                             <h1 class="row" style={{marginTop: "26vh"}}>{question.content}</h1>
-                            <h2 class="row" style={{marginTop: "3vh"}}>{question.subtitle}</h2>
+                            <h2 class="row" style={{marginTop: "3vh", width: "85vw"}}>{question.subtitle}</h2>
                         </div>
                     :
                         <h1 class="row" style={{marginTop: "35vh"}}>{question.content}</h1>
