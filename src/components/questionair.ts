@@ -241,6 +241,7 @@ export const questions:allQuestions[] = [
             Fluid: "Gender Fluid",
             NonBinary: "Non Binary",
             None: "None",
+            Other: "Other"
         }),
         parse: (inp, prof) => {
             prof.data.metas.gender = inp
@@ -291,6 +292,7 @@ export const questions:allQuestions[] = [
             Fluid: "Gender Fluid",
             NonBinary: "Non Binary",
             None: "None",
+            Other: "Other"
         }),
         parse: (inp, prof) => {
             prof.data.metas.orientation = inp

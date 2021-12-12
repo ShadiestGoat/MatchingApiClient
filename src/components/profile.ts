@@ -54,6 +54,7 @@ export type gender = "Male" |
                      "Female" |
                      "NonBinary" |
                      "Fluid" |
+                     "Other" |
                      "None"
 
 export type profile = {
