@@ -203,6 +203,22 @@ export const questions:allQuestions[] = [
         sub: "annoying"
     } as pieQuestion<annoying>,
     {
+        question: "By importance, what makes you politically compatible?",
+        type: "pie",
+        optionsAndAliases: () => ({
+            MatchCompass: "Political Compass",
+            politicalInvolvement: "Political Involvement"
+        }),
+        skipQuestion: (prof) => prof.weights.traits.MatchPolitical === 0 || prof.weights.major.Traits === 0,
+        parse: (inp, prof) => {
+            prof.weights.political = inp
+            return prof
+        },
+        values: (prof) => prof.weights.political,
+        major: "weights",
+        sub: "political"
+    } as pieQuestion<keyof profile['weights']['political']>,
+    {
         type: "Title",
         content: "Let's find out a bit more about you",
     },
