@@ -156,17 +156,17 @@ export const defaultProfile:profile = {
             SI: 0.5
         },
         looks: {
-            Figure: 0.45,
-            GoodFashion: 0.7,
+            Figure: 0.5,
+            GoodFashion: 0.5,
             Height: 173,
-            Hygenic: 0.8,
-            Muscularity: 0.6
+            Hygenic: 0.5,
+            Muscularity: 0.5
         },
         looksFace: {
-            HotEyes: 0.9,
-            HotHair: 0.8,
+            HotEyes: 0.5,
+            HotHair: 0.5,
             SharpChin: 0.5,
-            LittleAcne: 0.7
+            LittleAcne: 0.5
         },
         personality: {
             Creepy: 0.5,
@@ -193,12 +193,12 @@ export const defaultProfile:profile = {
     },
     weights: {
         annoying: {
-            Edgy: 0.2,
-            Egoistic: 0.15,
-            GoodTemper: 0.15,
-            Mature: 0.2,
-            Selfish: 0.15,
-            Talkative: 0.15
+            Edgy: 0.1667,
+            Egoistic: 0.1667,
+            GoodTemper: 0.1667,
+            Mature: 0.1667,
+            Selfish: 0.1667,
+            Talkative: 0.1667
         },
         infp: {
             FT: 0.25,
@@ -237,22 +237,22 @@ export const defaultProfile:profile = {
             CharacterAlignment: 0.125
         },
         political: {
-            MatchCompass: 0.4,
-            politicalInvolvement: 0.6
+            MatchCompass: 0.5,
+            politicalInvolvement: 0.5
         },
         sexual: {
-            IntoForeplay: 0.2,
-            MatchBDSM: 0.2,
-            MatchTop: 0.3,
-            Thirst: 0.3
+            IntoForeplay: 0.25,
+            MatchBDSM: 0.25,
+            MatchTop: 0.25,
+            Thirst: 0.25
         },
         traits: {
-            BookSmart: 0.1665,
-            StreetSmart: 0.1665,
-            GoodCook: 0.1665,
-            MatchPolitical: 0.1665,
-            Rich: 0.1665,
-            TechSavy: 0.1665,
+            BookSmart: 0.1667,
+            StreetSmart: 0.1667,
+            GoodCook: 0.1667,
+            MatchPolitical: 0.1667,
+            Rich: 0.1667,
+            TechSavy: 0.1667,
         },
     }
 }

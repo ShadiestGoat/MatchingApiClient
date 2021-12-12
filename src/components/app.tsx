@@ -6,7 +6,7 @@ import { allQuestions, question, questions } from './questionair';
 import { questionsHere } from './additionalQs';
 import axios from 'axios';
 
-const V = "1.3.0"
+const V = "1.3.1"
 
 const App: FunctionalComponent = () => {
     if (localStorage.getItem("v") != V) {
