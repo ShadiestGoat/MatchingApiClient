@@ -1,3 +1,4 @@
+import { coordsToProfileC, profileCoordsToCoords } from "./profile";
 import { question } from "./questionair";
 
 export const questionsHere:Record<string, question[]> = {
@@ -126,18 +127,15 @@ export const questionsHere:Record<string, question[]> = {
             },
             parse: (inp, prof) => {
                 // @ts-ignore
-                if (!prof.data.ratings.dan) prof.data.ratings.dan = {char: {
-                    x: 0.5,
-                    y: 0.5
-                }}
-                prof.data.ratings.dan.char = inp
+                if (!prof.data.ratings.dan) prof.data.ratings.dan = {char: [0.5, 0.5]}
+                prof.data.ratings.dan.char = coordsToProfileC(inp)
                 return prof
             },
             skipQuestion: () => false,
-            values: (prof) => (prof.data.ratings.dan?.char ?? {
-                x: 0,
-                y: 0
-            }),
+            values: (prof) => profileCoordsToCoords(prof.data.ratings.dan?.char ?? [
+                0.5,
+                0.5
+            ]),
             major: "data",
             sub: "ratings"
         },
@@ -267,18 +265,15 @@ export const questionsHere:Record<string, question[]> = {
             },
             parse: (inp, prof) => {
                 // @ts-ignore
-                if (!prof.data.ratings.zekuan) prof.data.ratings.zekuan = {char: {
-                    x: 0.5,
-                    y: 0.5
-                }}
-                prof.data.ratings.zekuan.char = inp
+                if (!prof.data.ratings.zekuan) prof.data.ratings.zekuan = {char: [0, 0]}
+                prof.data.ratings.zekuan.char = coordsToProfileC(inp)
                 return prof
             },
             skipQuestion: () => false,
-            values: (prof) => (prof.data.ratings.zekuan?.char ?? {
-                x: 0,
-                y: 0
-            }),
+            values: (prof) => profileCoordsToCoords(prof.data.ratings.zekuan?.char ?? [
+                0.5,
+                0.5
+            ]),
             major: "data",
             sub: "ratings"
         },
@@ -298,18 +293,15 @@ export const questionsHere:Record<string, question[]> = {
             },
             parse: (inp, prof) => {
                 // @ts-ignore
-                if (!prof.data.ratings.zengyi) prof.data.ratings.zengyi = {char: {
-                    x: 0.5,
-                    y: 0.5
-                }}
-                prof.data.ratings.zengyi.char = inp
+                if (!prof.data.ratings.zengyi) prof.data.ratings.zengyi = {char: [0.5, 0.5]}
+                prof.data.ratings.zengyi.char = coordsToProfileC(inp)
                 return prof
             },
             skipQuestion: () => false,
-            values: (prof) => ((prof.data.ratings.zengyi ?? {}).char ?? {
-                x: 0,
-                y: 0
-            }),
+            values: (prof) => profileCoordsToCoords((prof.data.ratings.zengyi ?? {}).char ?? [
+                0.5,
+                0.5
+            ]),
             major: "data",
             sub: "ratings"
         },
@@ -439,18 +431,15 @@ export const questionsHere:Record<string, question[]> = {
             },
             parse: (inp, prof) => {
                 // @ts-ignore
-                if (!prof.data.ratings.matao) prof.data.ratings.matao = {char: {
-                    x: 0.5,
-                    y: 0.5
-                }}
-                prof.data.ratings.matao.char = inp
+                if (!prof.data.ratings.matao) prof.data.ratings.matao = {char: [0.5, 0.5]}
+                prof.data.ratings.matao.char = coordsToProfileC(inp)
                 return prof
             },
             skipQuestion: () => false,
-            values: (prof) => ((prof.data.ratings.matao ?? {}).char ?? {
-                x: 0.5,
-                y: 0.5
-            }),
+            values: (prof) => profileCoordsToCoords((prof.data.ratings.matao ?? {}).char ?? [
+                0.5,
+                0.5
+            ]),
             major: "data",
             sub: "ratings"
         },
@@ -546,18 +535,15 @@ export const questionsHere:Record<string, question[]> = {
             },
             parse: (inp, prof) => {
                 // @ts-ignore
-                if (!prof.data.ratings.rayaan) prof.data.ratings.rayaan = {char: {
-                    x: 0.5,
-                    y: 0.5
-                }}
-                prof.data.ratings.rayaan.char = inp
+                if (!prof.data.ratings.rayaan) prof.data.ratings.rayaan = {char: [0.5, 0.5]}
+                prof.data.ratings.rayaan.char = coordsToProfileC(inp)
                 return prof
             },
             skipQuestion: () => false,
-            values: (prof) => (prof.data.ratings.rayaan?.char ?? {
-                x: 0.5,
-                y: 0.5
-            }),
+            values: (prof) => profileCoordsToCoords(prof.data.ratings.rayaan?.char ?? [
+                0.5,
+                0.5
+            ]),
             major: "data",
             sub: "ratings"
         },
@@ -693,18 +679,15 @@ export const questionsHere:Record<string, question[]> = {
             },
             parse: (inp, prof) => {
                 // @ts-ignore
-                if (!prof.data.ratings.bruna) prof.data.ratings.bruna = {char: {
-                    x: 0.5,
-                    y: 0.5
-                }}
-                prof.data.ratings.bruna.char = inp
+                if (!prof.data.ratings.bruna) prof.data.ratings.bruna = {char: [0.5, 0.5]}
+                prof.data.ratings.bruna.char = coordsToProfileC(inp)
                 return prof
             },
             skipQuestion: () => false,
-            values: (prof) => (prof.data.ratings.bruna?.char ?? {
-                x: 0.5,
-                y: 0.5
-            }),
+            values: (prof) => profileCoordsToCoords(prof.data.ratings.bruna?.char ?? [
+                0.5,
+                0.5
+            ]),
             major: "data",
             sub: "ratings"
         },
