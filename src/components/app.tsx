@@ -7,7 +7,7 @@ import { questionsHere } from './additionalQs';
 import axios from 'axios';
 import { roundPercent } from '../tools';
 
-const V = "1.3.1"
+const V = "1.4.1"
 
 const App: FunctionalComponent = () => {
     if (localStorage.getItem("v") != V) {

@@ -5,26 +5,24 @@ import transStyle from "./style.css"
 
 const InputQuestion:FunctionComponent<{
     dataInit: string,
+    err: boolean,
     inp: (inp:string) => void,
-    filt: (inp:string) => boolean
-}> = ({ inp, dataInit, filt }) => {
+    setErr: (newBol: boolean) => void,
+}> = ({ inp, dataInit, err, setErr }) => {
     const [data, setDat] = useState(dataInit)
-    const [error, setErr] = useState(false)
+
+    console.log(err)
 
     const setData = useCallback((inpu:string) => {
-        if (!filt(inpu)) {
-            setErr(true)
-            return
-        }
         setDat(inpu)
         inp(inpu)
-    }, [filt, inp])
+    }, [inp])
 
     return <Fragment>
         <div class={`row`} style={{height: "55vh", width: "100vw", alignItems: "center"}}>
             <input value={data} onInput={(e) => {
                 setData((e.target as HTMLInputElement).value)
-            }} class={`${style.input} ${error ? transStyle.wrong : ''}`} style={{
+            }} class={`${style.input} ${err ? transStyle.wrong : ''}`} style={{
                 height: "15vh",
                 width: "30vw",
                 fontSize: "100%"

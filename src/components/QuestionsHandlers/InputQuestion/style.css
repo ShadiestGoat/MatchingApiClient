@@ -20,5 +20,5 @@
 }
 
 .wrong {
-    animation: anim 1s alternate;
+    animation: anim 0.75s alternate ease-in-out;
 }

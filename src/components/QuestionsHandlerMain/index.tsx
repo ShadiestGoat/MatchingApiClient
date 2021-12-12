@@ -1,5 +1,6 @@
 import { FunctionComponent, Fragment } from "preact";
 import { useCallback } from "preact/hooks";
+import { useState } from "react";
 import { useGlobalListener } from "../../tools";
 import { profile } from "../profile";
 import { allQuestions } from "../questionair";
@@ -27,12 +28,19 @@ const Question:FunctionComponent<{
     first: boolean,
     last: boolean,
 }> = (({ profile, question, setProfile, first, last, changeQ }) => {
+    const [err, setErr] = useState(false)
 
     const chang = useCallback((up:boolean) => {
         if (up && last) return
         if (!up && first) return
+        if (question.type == "input" && up) {
+            if (!question.filter(question.values(profile))) {
+                setErr(true)
+                return
+            }
+        }
         changeQ(up)
-    }, [last, first, changeQ])
+    }, [last, first, changeQ, question, profile])
 
     useGlobalListener('keydown', (e) => {
         if (e.key == 'ArrowLeft') chang(false)
@@ -56,7 +64,12 @@ const Question:FunctionComponent<{
         : <Fragment>
             <a class="row" style={{marginTop: "7vh", textDecoration: question.a ? "underline #6F42C2" : "", textUnderlineOffset: "0.3vh"}} href={question.a} target={"_blank"} rel="noreferrer"><h1>{question.question}</h1></a>
             {
-                question.type == "input" ? <InputQuestion dataInit={question.values(profile)} filt={question.filter} inp={(inp) => setProfile(question.parse(inp, profile), question.major, question.sub)} />
+                question.type == "input" ? <InputQuestion
+                    err={err}
+                    setErr={setErr}
+                    dataInit={question.values(profile)}
+                    inp={(inp) => setProfile(question.parse(inp, profile), question.major, question.sub)}
+                />
                 : question.type == "pie" ?
                     <PieQuestion inp={
                     (inp:Record<string, unknown>) => {
