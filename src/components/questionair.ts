@@ -375,6 +375,19 @@ export const questions:allQuestions[] = [
         subtitle: "Now we will finding out about your dream partner"
     },
     {
+        question: "What is your dream partner's height (cm)?",
+        type: "input",
+        skipQuestion: (prof) => prof.weights.major.Looks === 0 || prof.weights.looks.Height === 0,
+        filter: (str) => !Number.isNaN(parseInt(str, 10)),
+        parse: (inp, prof) => {
+            prof.pref.looks.Height = parseInt(inp, 10)
+            return prof
+        },
+        values: (prof) => `${prof.pref.looks.Height.toString()}cm`,
+        major: "pref",
+        sub: "looks"
+    },
+    {
         question: "What do you prefer for these qualities to be?",
         type: "slider",
         optionsAndAliases: (prof) => Object.fromEntries(
