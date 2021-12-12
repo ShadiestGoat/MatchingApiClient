@@ -118,7 +118,8 @@ export const defaultProfile:profile = {
                 Fluid: false,
                 Male: false,
                 NonBinary: false,
-                None: false
+                None: false,
+                Other: false
             },
             top: 2
         },
