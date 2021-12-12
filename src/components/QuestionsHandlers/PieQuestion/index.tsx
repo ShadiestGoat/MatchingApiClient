@@ -1,6 +1,6 @@
 import { FunctionComponent } from "preact"
 import { useCallback, useEffect, useRef, useState } from "preact/hooks"
-import { roundPercent, useGlobalListener } from "../../../tools"
+import { useGlobalListener } from "../../../tools"
 import style from "../style.css"
 
 type data2 = {
