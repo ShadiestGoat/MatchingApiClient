@@ -370,7 +370,7 @@ export const questions:allQuestions[] = [
                 ["Egoistic", "No ego", "Extreme egoism"],
                 ["GoodTemper", "Easy to Anger", "Hard to anger"],
                 ["Mature", "Immature", "Very Mature"],
-                ["Selfish", "Selfless", "Selfless"],
+                ["Selfish", "Selfless", "Selfish"],
                 ["Talkative", "Mute", "Extremely Talkative"],
             ] as [annoying, string, string][]).filter(
                 v => prof.weights.annoying[v[0]] !== 0
