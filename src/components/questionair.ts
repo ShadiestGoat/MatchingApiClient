@@ -1,4 +1,4 @@
-import { annoying, infpRes, looks, looksFace, majorMatch, personality, profile, traits, gender, profileCoordsToCoords, coordsToProfileC } from "./profile"
+import { annoying, infpRes, looks, looksFace, majorMatch, personality, profile, traits, gender, profileCoordsToCoords, coordsToProfileC, sexualCompatability } from "./profile"
 
 type baseQuestion<T> = {
     question: string,
@@ -101,6 +101,24 @@ export const questions:allQuestions[] = [
         major: "weights",
         sub: "major"
     } as pieQuestion<majorMatch>,
+    {
+        question: "By importance, what makes a sexualy compatible partner?",
+        type: "pie",
+        optionsAndAliases: () => ({
+            IntoForeplay: "Into Foreplay Match",
+            MatchBDSM: "Match for BDSM",
+            MatchTop: "'top' type match",
+            Thirst: "Thirst Match"
+        }),
+        parse: (inp, prof) => {
+            prof.weights.sexual = inp
+            return prof
+        },
+        skipQuestion: (prof) => prof.weights.major.SexualCompatability === 0,
+        values: (prof) => prof.weights.sexual,
+        major: "weights",
+        sub: "major"
+    } as pieQuestion<sexualCompatability>,
     {
         question: "How important are these qualities for hotness?",
         type: "pie",
