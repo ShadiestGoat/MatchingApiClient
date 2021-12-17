@@ -11,7 +11,7 @@ import { roundPercent } from '../tools';
 // Second number is backwards breaking stuff
 // Third is bug fixes
 // From now on, it will stay consistent!
-export const Version = "1.5.1"
+export const Version = "1.5.2"
 
 const App: FunctionalComponent = () => {
     if (localStorage.getItem("v")?.split('.').slice(0, 2).join(".") != Version.split('.').slice(0, 2).join(".")) {
