@@ -7,6 +7,7 @@ import { allQuestions } from "../questionair";
 import CheckboxQuestion from "../QuestionsHandlers/CheckboxQuestion";
 import GraphQuestion from "../QuestionsHandlers/GraphQuestion";
 import InputQuestion from "../QuestionsHandlers/InputQuestion";
+import OrderQuestion from "../QuestionsHandlers/OrderQuestion";
 import PieQuestion from "../QuestionsHandlers/PieQuestion";
 import RadialQuestion from "../QuestionsHandlers/RadialQuestion";
 import SliderQuestion from "../QuestionsHandlers/SliderQuestion";
@@ -98,6 +99,8 @@ const Question:FunctionComponent<{
                     <RadialQuestion labels={question.optionsAndAliases(profile)} dataInit={question.values(profile)} inp={(inp) => setProfile(question.parse(inp, profile), question.major, question.sub)} />
                 : question.type == "checkbox" ?
                     <CheckboxQuestion labels={question.optionsAndAliases(profile)} dataInit={question.values(profile)} inp={(inp) => setProfile(question.parse(inp, profile), question.major, question.sub)} />
+                : question.type == "draggable" ?
+                    <OrderQuestion aliases={question.optionsAndAliases(profile)} labels={question.labels} dataInit={question.values(profile)} inp={(inp) => setProfile(question.parse(inp, profile), question.major, question.sub)} />
                 : <Fragment />
             }
         </Fragment>

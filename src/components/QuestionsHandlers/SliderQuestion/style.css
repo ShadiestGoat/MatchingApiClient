@@ -1,0 +1,27 @@
+.slider {
+    -webkit-appearance: none;  /* Override default CSS styles */
+    appearance: none;
+    width: 100%; /* Full-width */
+    height: 1.75vh; /* Specified height */
+    background: #eeeeee; /* Grey background */
+    outline: none; /* Remove outline */
+    border-radius: 25px;
+}
+
+/* The slider handle (use -webkit- (Chrome, Opera, Safari, Edge) and -moz- (Firefox) to override default look) */
+.slider::-webkit-slider-thumb {
+    -webkit-appearance: none; /* Override default look */
+    appearance: none;
+    width: 3.5vh; /* Set a specific slider handle width */
+    height: 3.5vh; /* Slider handle height */
+    background: #eeeeee; /* Green background */
+    border: solid 6px #1e1e1e;
+    border-radius: 50%;
+    cursor: pointer; /* Cursor on hover */
+}
+
+.slider::-webkit-slider-thumb:hover {
+    width: 3.7vh; /* Set a specific slider handle width */
+    height: 3.7vh; /* Slider handle height */
+    border: solid 5px #1e1e1e;
+}

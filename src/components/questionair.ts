@@ -1,4 +1,4 @@
-import { annoying, infpRes, looks, looksFace, majorMatch, personality, profile, traits, gender, profileCoordsToCoords, coordsToProfileC, sexualCompatability } from "./profile"
+import { annoying, infpRes, looks, looksFace, majorMatch, personality, profile, traits, gender, profileCoordsToCoords, coordsToProfileC, sexualCompatability, Gender, Subject } from "./profile"
 
 type baseQuestion<T> = {
     question: string,
@@ -18,13 +18,19 @@ export type inputQuestion = {
     filter: (str: string) => boolean
 } & baseQuestion<string>
 
-export type pieQuestion<Keys extends string> = {
+export type orderQuestion<Keys extends string | number> = {
+    type: "draggable",
+    optionsAndAliases: (prof:profile) => Record<Keys, string>,
+    labels: string[]
+} & baseQuestion<Keys[]>
+
+export type pieQuestion<Keys extends string | number> = {
     type: "pie",
     optionsAndAliases: (prof:profile) => Record<Keys, string>
 } & baseQuestion<Record<Keys, number>>
 
 /** note that 0% is the very left */
-export type sliderQuestion<Keys extends string> = {
+export type sliderQuestion<Keys extends string | number> = {
     type: "slider",
     optionsAndAliases: (prof:profile) => Record<Keys, {
         inside: labelOne[],
@@ -45,37 +51,27 @@ export type graphQuestion = {
     }
 } & baseQuestion<{x: number, y: number}>
 
-export type radialQuestion<Keys extends string> = {
+export type radialQuestion<Keys extends string | number> = {
     type: "radial",
     optionsAndAliases: (prof:profile) => Record<Keys, string>
 } & baseQuestion<Keys>
 
-export type checkboxQuestion<Keys extends string> = {
+export type checkboxQuestion<Keys extends string | number> = {
     type: "checkbox",
     optionsAndAliases: (prof:profile) => Record<Keys, string>
 } & baseQuestion<Record<Keys, boolean>>
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-export type question<Keys extends string = any> = inputQuestion | pieQuestion<Keys> | sliderQuestion<Keys> | graphQuestion | radialQuestion<Keys> | checkboxQuestion<Keys>
+export type question<Keys extends string | number = any> =
+            inputQuestion |
+            pieQuestion<Keys> |
+            sliderQuestion<Keys> |
+            graphQuestion |
+            radialQuestion<Keys> |
+            checkboxQuestion<Keys> |
+            orderQuestion<Keys>
 
 export type allQuestions = question | {type: "Title", content: string, subtitle?: string}
-
-const genderEnum:Record<gender, number> = {
-    Male: 0,
-    Female: 1,
-    NonBinary: 2,
-    Fluid: 3,
-    None: 4,
-    Other: 5
-}
-const genderEnumReverse:Record<number, gender> = {
-    0: "Male",
-    1: "Female",
-    2: "NonBinary",
-    3: "Fluid",
-    4: "None",
-    5: "Other"
-}
 
 export const questions:allQuestions[] = [
     {
@@ -91,6 +87,7 @@ export const questions:allQuestions[] = [
             Personality: "Personality",
             SexualCompatability: "Sexual Compatability",
             Traits: "Traits",
+            Career: "Career Compatability"
         }),
         parse: (inp, prof) => {
             prof.weights.major = inp
@@ -102,7 +99,7 @@ export const questions:allQuestions[] = [
         sub: "major"
     } as pieQuestion<majorMatch>,
     {
-        question: "By importance, what makes a sexualy compatible partner?",
+        question: "By importance, what makes a sexually compatible partner?",
         type: "pie",
         optionsAndAliases: () => ({
             IntoForeplay: "Into Foreplay Match",
@@ -164,7 +161,7 @@ export const questions:allQuestions[] = [
             BookSmart: "Book Smart",
             GoodCook: "Good Cook",
             MatchPolitical: "Politicaly Compatible",
-            Rich: "Rich (Money)",
+            Rich: "Wealth Level",
             StreetSmart: "Street Smart",
             TechSavy: "Tech Savy",
         }),
@@ -242,7 +239,7 @@ export const questions:allQuestions[] = [
         type: "pie",
         optionsAndAliases: () => ({
             MatchCompass: "Political Compass",
-            politicalInvolvement: "Political Involvement"
+            politicalEngagement: "Political Engagement"
         }),
         skipQuestion: (prof) => prof.weights.traits.MatchPolitical === 0 || prof.weights.major.Traits === 0,
         parse: (inp, prof) => {
@@ -300,23 +297,53 @@ export const questions:allQuestions[] = [
         question: "What gender are you?",
         type: "radial",
         optionsAndAliases: () => ({
-            Male: "Male",
-            Female: "Female",
-            Fluid: "Gender Fluid",
-            NonBinary: "Non Binary",
-            None: "None",
-            Other: "Other"
+            0: "Male",
+            1: "Female",
+            2: "Non Binary",
+            3: "Gender Fluid",
+            4: "None (the gender)",
+            5: "Other"
         }),
         parse: (inp, prof) => {
-            prof.data.metas.gender = genderEnum[inp]
+            prof.data.gender.gender = inp
             return prof
         },
         skipQuestion: () => false,
-        values: (prof) => genderEnumReverse[prof.data.metas.gender],
+        values: (prof) => prof.data.gender.gender,
         major: "data",
-    } as question<gender>,
+    } as radialQuestion<Gender>,
     {
-        question: "Are you a monogomist?",
+        question: "Ok, but are you a femboy?",
+        type: "radial",
+        optionsAndAliases: () => ({
+            f: "No!",
+            t: "Yes!"
+        }),
+        major: "data",
+        parse: (inp, prof) => {
+            prof.data.gender.isOpposite = inp == "t"
+            return prof
+        },
+        skipQuestion: (prof) => prof.data.gender.gender != Gender.Male,
+        values: (prof) => prof.data.gender.isOpposite ? "t" : "f"
+    } as radialQuestion<"t" | "f">,
+    {
+        question: "Ok, but are you a tomboy?",
+        type: "radial",
+        optionsAndAliases: () => ({
+            f: "No!",
+            t: "Yes!"
+        }),
+        major: "data",
+        parse: (inp, prof) => {
+            prof.data.orientation.okWithOpposite = inp == "t"
+            return prof
+        },
+        skipQuestion: (prof) => prof.data.gender.gender != Gender.Female,
+        values: (prof) => prof.data.gender.isOpposite ? "t" : "f"
+    } as radialQuestion<"t" | "f">,
+    {
+        question: "Are you a monogamist?",
         type: "radial",
         optionsAndAliases: () => ({
             0: "Monogomus",
@@ -324,11 +351,11 @@ export const questions:allQuestions[] = [
             2: "Depends"
         }),
         parse: (inp, prof) => {
-            prof.data.metas.monogomy = parseInt(inp, 10) as number
+            prof.data.monogomy = parseInt(inp, 10) as number
             return prof
         },
         skipQuestion: () => false,
-        values: (prof) => prof.data.metas.monogomy.toString() as "0" | "1" | "2",
+        values: (prof) => prof.data.monogomy.toString() as "0" | "1" | "2",
         major: "data"
     } as question<"0" | "1" | "2">,
     {
@@ -340,11 +367,11 @@ export const questions:allQuestions[] = [
             2: "Versatile"
         }),
         parse: (inp, prof) => {
-            prof.data.metas.top = parseInt(inp, 10) as number
+            prof.data.top = parseInt(inp, 10) as number
             return prof
         },
         skipQuestion: () => false,
-        values: (prof) => prof.data.metas.top.toString() as "0" | "1" | "2",
+        values: (prof) => prof.data.top.toString() as "0" | "1" | "2",
         major: "data"
     } as question<"0" | "1" | "2">,
     {
@@ -355,17 +382,47 @@ export const questions:allQuestions[] = [
             Female: "Female",
             Fluid: "Gender Fluid",
             NonBinary: "Non Binary",
-            None: "None",
+            None: "No Gender",
             Other: "Other"
         }),
         parse: (inp, prof) => {
-            prof.data.metas.orientation = inp
+            prof.data.orientation.genders = inp
             return prof
         },
         skipQuestion: () => false,
-        values: (prof) => prof.data.metas.orientation,
+        values: (prof) => prof.data.orientation.genders,
         major: "data"
     } as question<gender>,
+    {
+        question: "Ok, I see you're not into men, but are you into femboys?",
+        type: "radial",
+        optionsAndAliases: () => ({
+            f: "No!",
+            t: "Yes!"
+        }),
+        major: "data",
+        parse: (inp, prof) => {
+            prof.data.orientation.okWithOpposite = inp == "t"
+            return prof
+        },
+        skipQuestion: (prof) => !(prof.data.orientation.genders.Female && !prof.data.orientation.genders.Male),
+        values: (prof) => prof.data.orientation.okWithOpposite ? "t" : "f"
+    } as radialQuestion<"t" | "f">,
+    {
+        question: "Ok, I see you're not into women, but are you into tomboys?",
+        type: "radial",
+        optionsAndAliases: () => ({
+            f: "No!",
+            t: "Yes!"
+        }),
+        major: "data",
+        parse: (inp, prof) => {
+            prof.data.orientation.okWithOpposite = inp == "t"
+            return prof
+        },
+        skipQuestion: (prof) => !(prof.data.orientation.genders.Male && !prof.data.orientation.genders.Female),
+        values: (prof) => prof.data.orientation.okWithOpposite ? "t" : "f"
+    } as radialQuestion<"t" | "f">,
     {
         question: "How much are you into foreplay",
         type: "slider",
@@ -388,10 +445,55 @@ export const questions:allQuestions[] = [
         sub: "intoForeplay"
     } as question<"IntoForeplay">,
     {
+        question: "Which subject is your future career going to involve the most?",
+        type: "radial",
+        major: "data",
+        optionsAndAliases: () => ({
+            0: "Languages",
+            1: "Business",
+            2: "Computer Sciences",
+            3: "Philosophy",
+            4: "Natural Sciences",
+            5: "Human Sciences",
+            6: "Arts",
+            7: "Maths",
+            8: "Police/Military"
+        }),
+        parse: (inp, prof) => {
+            prof.data.subject = inp
+            return prof
+        },
+        skipQuestion: () => false,
+        values: (prof) => prof.data.subject,
+    } as radialQuestion<Subject>,
+    {
         type: "Title",
         content: "Dream Partner",
         subtitle: "Now we will finding out about your dream partner"
     },
+    {
+        question: "In order, what is your dream partner's job involved with?",
+        type: "draggable",
+        labels: ["Most want it", "Least want it"],
+        major: "pref",
+        optionsAndAliases: () => ({
+            0: "Languages",
+            1: "Business",
+            2: "Computer Sciences",
+            3: "Philosophy",
+            4: "Natural Sciences",
+            5: "Human Sciences",
+            6: "Arts",
+            7: "Maths",
+            8: "Police/Military"
+        }),
+        parse: (inp, prof) => {
+            prof.pref.career = inp
+            return prof
+        },
+        skipQuestion: (prof) => prof.weights.major.Career === 0,
+        values: (prof) => prof.pref.career
+    } as question<Subject>,
     {
         question: "What is your dream partner's height (cm)?",
         type: "input",
@@ -624,20 +726,20 @@ export const questions:allQuestions[] = [
         sub: "sexual"
     } as question<"Thirst">,
     {
-        question: "How plolitically involved do you want your partner?",
+        question: "How politically engaged do you want your partner?",
         type: "slider",
         optionsAndAliases: () => ({
             PolInvolv: {
                 inside: [],
-                outside: ["Does not care", "Extremly involved"]
+                outside: ["Does not care", "Extremly engaged"]
             }
         }),
         parse: (inp, prof) => {
-            prof.pref.political.politicalInvolvement = inp.PolInvolv
+            prof.pref.political.politicalEngagement = inp.PolInvolv
             return prof
         },
-        skipQuestion: (prof) => prof.weights.major.Traits === 0 || prof.weights.traits.MatchPolitical === 0 || prof.weights.political.politicalInvolvement === 0,
-        values: (prof) => ({PolInvolv: prof.pref.political.politicalInvolvement}),
+        skipQuestion: (prof) => prof.weights.major.Traits === 0 || prof.weights.traits.MatchPolitical === 0 || prof.weights.political.politicalEngagement === 0,
+        values: (prof) => ({PolInvolv: prof.pref.political.politicalEngagement}),
         major: "pref",
         sub: "political"
     } as question<"PolInvolv">,
@@ -654,7 +756,7 @@ export const questions:allQuestions[] = [
             prof.weights.traits.StreetSmart === 0 ? {} :
             {StreetSmart: {
                 inside: [] as labelOne[],
-                outside: ["Oblivious", "Understands"]
+                outside: ["Oblivious", "Wise"]
             }}
         )),
         parse: (inp, prof) => {

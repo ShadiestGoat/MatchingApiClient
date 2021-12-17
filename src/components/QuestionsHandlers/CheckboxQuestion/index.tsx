@@ -18,7 +18,8 @@ const CheckboxQuestion:FunctionComponent<{
         {
             Object.keys(labels).map(v => (
                 <div key={v} style={{
-                    boxShadow: data[v] ? "0 0 25px 3px #6f42c2" : ""
+                    boxShadow: data[v] ? "0 0 25px 3px #6f42c2" : "",
+                    borderRadius: "12.5px"
                 }} class={style.icon} onClick={() => {
                     const newData = {...data}
                     newData[v] = !newData[v]

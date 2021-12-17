@@ -36,7 +36,7 @@ export type sexualCompatability = "MatchBDSM" |
                                   "IntoForeplay"
 
 export type politicalMatch =  "MatchCompass" |
-                              "politicalInvolvement"
+                              "politicalEngagement"
 
 export type traits = "BookSmart" |
                      "StreetSmart" |
@@ -48,7 +48,8 @@ export type traits = "BookSmart" |
 export type majorMatch = "Personality" |
                          "Traits" |
                          "Looks" |
-                         "SexualCompatability"
+                         "SexualCompatability" |
+                         "Career"
 
 export type gender = "Male" |
                      "Female" |
@@ -58,6 +59,37 @@ export type gender = "Male" |
                      "None"
 
 export type profileCoords = [number, number]
+
+export enum Subject {
+    language,
+    business,
+    computer,
+    philosophy,
+    experimentSciences,
+    humanScience,
+    arts,
+    math,
+    police,
+}
+
+export type subjects =  "language" |
+                        "business" |
+                        "computer" |
+                        "philosophy" |
+                        "experimentSciences" |
+                        "humanScience" |
+                        "arts" |
+                        "math" |
+                        "police"
+
+export enum Gender {
+    Male,
+    Female,
+    NonBinary,
+    Fluid,
+    None,
+    Other,
+}
 
 export function coordsToProfileC(coords:coords):profileCoords {
     return [coords.x, coords.y]
@@ -71,27 +103,35 @@ export function profileCoordsToCoords(coords:profileCoords):coords {
 
 export type profile = {
     data: {
-        metas: {
-            gender: number,
+        gender: {
+            gender: Gender
+            isOpposite: boolean,
+        },
+        /**
+         * 0 - Monogomous
+         * 1 - NonMonogomous
+         * 2 - Switch
+         */
+        monogomy: number,
+        /**
+         * 0 - Top
+         * 1 - Bottom
+         * 2 - Switch
+         */
+        top: number,
+        orientation: {
+            genders: Record<gender, boolean>,
             /**
-             * 0 - Monogomous
-             * 1 - NonMonogomous
-             * 2 - Switch
+             * femboys/tomgirls
              */
-            monogomy: number,
-            /**
-             * 0 - Top
-             * 1 - Bottom
-             * 2 - Switch
-             */
-            top: number,
-            orientation: Record<gender, boolean>,
+            okWithOpposite: boolean
         },
         intoForeplay: number,
         ratings: Record<string, Record<string, number> & {char: profileCoords}>
         politicalCompass: string,
         bdsm: string,
         infp: string,
+        subject: Subject
     },
     pref: {
         annoying: Record<annoying, number>,
@@ -99,14 +139,14 @@ export type profile = {
         looksFace: Record<looksFace, number>,
         infp: Record<infpRes, number>,
         political: {
-            politicalInvolvement: number,
+            politicalEngagement: number,
             MatchCompass: profileCoords
         },
         sexual: Record<Exclude<sexualCompatability, "MatchTop" | "MatchBDSM" | "IntoForeplay">, number>,
         looks: Record<Exclude<looks, "MatchFace">, number>,
         personality: Record<Exclude<personality, "Annoying" | "MatchINFP" | "CharacterAlignment">, number>,
-
-        characterAlignment: profileCoords
+        characterAlignment: profileCoords,
+        career: Subject[]
     },
     weights: {
         annoying: Record<annoying, number>,
@@ -123,10 +163,13 @@ export type profile = {
 
 export const defaultProfile:profile = {
     data: {
-        metas: {
-            gender: 4,
-            monogomy: 0,
-            orientation: {
+        gender: {
+            gender: Gender.None,
+            isOpposite: false
+        },
+        monogomy: 0,
+        orientation: {
+            genders: {
                 Female: false,
                 Fluid: false,
                 Male: false,
@@ -134,13 +177,15 @@ export const defaultProfile:profile = {
                 None: false,
                 Other: false
             },
-            top: 2
+            okWithOpposite: false
         },
+        top: 2,
         intoForeplay: 0.5,
         infp: "",
         politicalCompass: "",
         bdsm: "",
-        ratings: {}
+        ratings: {},
+        subject: -1
     },
     pref: {
         annoying: {
@@ -179,7 +224,7 @@ export const defaultProfile:profile = {
         },
         political: {
             MatchCompass: [0.5, 0.5],
-            politicalInvolvement: 0.5
+            politicalEngagement: 0.5
         },
         sexual: {
             Thirst: 0.5
@@ -191,7 +236,17 @@ export const defaultProfile:profile = {
             Rich: 0.5,
             TechSavy: 0.5,
         },
-        characterAlignment: [0.5, 0.5]
+        characterAlignment: [0.5, 0.5],
+        career: [
+            0,
+            1,
+            2,
+            3,
+            4,
+            6,
+            7,
+            8
+        ]
     },
     weights: {
         annoying: {
@@ -223,10 +278,11 @@ export const defaultProfile:profile = {
             LittleAcne: 0.25
         },
         major: {
-            Looks: 0.25,
-            Personality: 0.25,
-            SexualCompatability: 0.25,
-            Traits: 0.25
+            Looks: 0.2,
+            Personality: 0.2,
+            SexualCompatability: 0.2,
+            Traits: 0.2,
+            Career: 0.2
         },
         personality: {
             Annoying: 0.125,
@@ -240,7 +296,7 @@ export const defaultProfile:profile = {
         },
         political: {
             MatchCompass: 0.5,
-            politicalInvolvement: 0.5
+            politicalEngagement: 0.5
         },
         sexual: {
             IntoForeplay: 0.25,
