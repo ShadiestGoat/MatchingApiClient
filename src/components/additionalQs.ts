@@ -692,4 +692,32 @@ export const questionsHere:Record<string, question[]> = {
             sub: "ratings"
         },
     ],
+    // Crazy Sex man 69
+    hu9asdioj: [
+        {
+            question: "What is the character alignment of Dan?",
+            type: "graph",
+            labels: {
+                inside: [],
+                outside: {
+                    top: ["Lawful Good", "Neutral Good", "Chaotic Good"],
+                    middle: ["Lawful Neutral", "", "Chaotic Neutral"],
+                    bottom: ["Lawful Evil", "Neutral Evil", "Chaotic Evil"]
+                }
+            },
+            parse: (inp, prof) => {
+                // @ts-ignore
+                if (!prof.data.ratings.dan) prof.data.ratings.dan = {char: [0.5, 0.5]}
+                prof.data.ratings.dan.char = coordsToProfileC(inp)
+                return prof
+            },
+            skipQuestion: () => false,
+            values: (prof) => profileCoordsToCoords(prof.data.ratings.dan?.char ?? [
+                0.5,
+                0.5
+            ]),
+            major: "data",
+            sub: "ratings"
+        },
+    ]
 }
