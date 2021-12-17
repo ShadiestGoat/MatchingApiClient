@@ -297,15 +297,15 @@ export const questions:allQuestions[] = [
         question: "What gender are you?",
         type: "radial",
         optionsAndAliases: () => ({
-            0: "Male",
-            1: "Female",
-            2: "Non Binary",
-            3: "Gender Fluid",
-            4: "None (the gender)",
-            5: "Other"
+            "0": "Male",
+            "1": "Female",
+            "2": "Non Binary",
+            "3": "Gender Fluid",
+            "4": "None (the gender)",
+            "5": "Other"
         }),
         parse: (inp, prof) => {
-            prof.data.gender.gender = inp
+            prof.data.gender.gender = parseInt(inp as unknown as string, 10)
             return prof
         },
         skipQuestion: () => false,
@@ -346,9 +346,9 @@ export const questions:allQuestions[] = [
         question: "Are you a monogamist?",
         type: "radial",
         optionsAndAliases: () => ({
-            0: "Monogomus",
-            1: "Not Monogomus",
-            2: "Depends"
+            "0": "Monogomus",
+            "1": "Not Monogomus",
+            "2": "Depends"
         }),
         parse: (inp, prof) => {
             prof.data.monogomy = parseInt(inp, 10) as number
@@ -362,9 +362,9 @@ export const questions:allQuestions[] = [
         question: "Are you a top?",
         type: "radial",
         optionsAndAliases: () => ({
-            0: "Top",
-            1: "Bottom",
-            2: "Versatile"
+            "0": "Top",
+            "1": "Bottom",
+            "2": "Versatile"
         }),
         parse: (inp, prof) => {
             prof.data.top = parseInt(inp, 10) as number
@@ -449,18 +449,18 @@ export const questions:allQuestions[] = [
         type: "radial",
         major: "data",
         optionsAndAliases: () => ({
-            0: "Languages",
-            1: "Business",
-            2: "Computer Sciences",
-            3: "Philosophy",
-            4: "Natural Sciences",
-            5: "Human Sciences",
-            6: "Arts",
-            7: "Maths",
-            8: "Police or Military"
+            "0": "Languages",
+            "1": "Business",
+            "2": "Computer Sciences",
+            "3": "Philosophy",
+            "4": "Natural Sciences",
+            "5": "Human Sciences",
+            "6": "Arts",
+            "7": "Maths",
+            "8": "Police or Military"
         }),
         parse: (inp, prof) => {
-            prof.data.subject = inp
+            prof.data.subject = parseInt(inp as unknown as string, 10)
             return prof
         },
         skipQuestion: () => false,
@@ -477,18 +477,18 @@ export const questions:allQuestions[] = [
         labels: ["Most want it", "Least want it"],
         major: "pref",
         optionsAndAliases: () => ({
-            0: "Languages",
-            1: "Business",
-            2: "Computer Sciences",
-            3: "Philosophy",
-            4: "Natural Sciences",
-            5: "Human Sciences",
-            6: "Arts",
-            7: "Maths",
-            8: "Police or Military"
+            "0": "Languages",
+            "1": "Business",
+            "2": "Computer Sciences",
+            "3": "Philosophy",
+            "4": "Natural Sciences",
+            "5": "Human Sciences",
+            "6": "Arts",
+            "7": "Maths",
+            "8": "Police or Military"
         }),
         parse: (inp, prof) => {
-            prof.pref.career = inp
+            prof.pref.career = inp.map((v) => parseInt(v as unknown as string, 10))
             return prof
         },
         skipQuestion: (prof) => prof.weights.major.Career === 0,
