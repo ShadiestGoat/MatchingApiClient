@@ -7,12 +7,12 @@ import { questionsHere } from './additionalQs';
 import axios from 'axios';
 import { roundPercent } from '../tools';
 
-const V = "1.5.0"
+export const Version = "1.5.0"
 
 const App: FunctionalComponent = () => {
-    if (localStorage.getItem("v") != V) {
+    if (localStorage.getItem("v") != Version) {
         localStorage.removeItem("profile")
-        localStorage.setItem("v", V)
+        localStorage.setItem("v", Version)
     }
     const [curProfile, SetCurProfile] = useState<profile>(JSON.parse(localStorage.getItem("profile") ?? JSON.stringify(defaultProfile)))
     const [i, SetI] = useState<number>(0)

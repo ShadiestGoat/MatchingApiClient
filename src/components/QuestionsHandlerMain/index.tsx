@@ -2,6 +2,7 @@ import { FunctionComponent, Fragment } from "preact";
 import { useCallback } from "preact/hooks";
 import { useState } from "react";
 import { useGlobalListener } from "../../tools";
+import { Version } from "../app";
 import { profile } from "../profile";
 import { allQuestions } from "../questionair";
 import CheckboxQuestion from "../QuestionsHandlers/CheckboxQuestion";
@@ -109,6 +110,11 @@ const Question:FunctionComponent<{
             <button disabled={first} onClick={() => chang(false)} className="col btn btn-p"> Back </button>
             <button disabled={last} onClick={() => chang(true)} className="col btn btn-p"> Next </button>
         </div>
+        <h4 style={{
+            position: "abosulte",
+            top: "98vh",
+            left: "96vw"
+        }}>{Version}</h4>
     </div>
 })
 
