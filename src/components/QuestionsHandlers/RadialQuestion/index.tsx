@@ -14,16 +14,37 @@ const RadialQuestion:FunctionComponent<{
         inp(v)
     }, [inp])
 
-    return <div style={{height: "55vh", alignItems: "center", justifyContent: "space-around", width: "75vw"}} class="row">
-        {
-            Object.keys(labels).map(v => (
-                <div key={v} style={{
-                    boxShadow: data === v ? "0 0 25px 3px #6f42c2" : ""
-                }} class={style.icon} onClick={() => setData(v)}>
-                    <h4 style={{fontSize: "3.6vh"}}>{labels[v]}</h4>
-                </div>
-            ))
+    const rawLabels = Object.keys(labels)
+    const rows = [] as string[][]
+
+    let curRow = [] as string[]
+    for (let i = 0; i < rawLabels.length; i++) {
+        curRow.push(rawLabels[i])
+        if (curRow.length == 5) {
+            rows.push(curRow)
+            curRow = []
         }
+    }
+    if (curRow.length != 0) rows.push(curRow)
+
+    console.log(rows)
+
+    return <div style={{height: "55vh", alignItems: "center", justifyContent: "space-around", width: "75vw"}} class="row">
+        <div class="col" style={{width: "100%", height: "100%"}}>
+            {
+                rows.map((row) => (
+                    <div key={row.join(',')} style={{height: "55vh", alignItems: "center", justifyContent: "space-around", width: "75vw"}} class="row">
+                        {row.map((ico) => (
+                            <div key={ico} style={{
+                                boxShadow: data === ico ? "0 0 25px 3px #6f42c2" : ""
+                            }} class={style.icon} onClick={() => setData(ico)}>
+                                <h4 style={{fontSize: "3.6vh"}}>{labels[ico]}</h4>
+                            </div>
+                        ))}
+                    </div>
+                ))
+            }
+        </div>
     </div>
 }
 

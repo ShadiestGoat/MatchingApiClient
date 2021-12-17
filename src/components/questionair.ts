@@ -457,7 +457,7 @@ export const questions:allQuestions[] = [
             5: "Human Sciences",
             6: "Arts",
             7: "Maths",
-            8: "Police/Military"
+            8: "Police or Military"
         }),
         parse: (inp, prof) => {
             prof.data.subject = inp
@@ -485,7 +485,7 @@ export const questions:allQuestions[] = [
             5: "Human Sciences",
             6: "Arts",
             7: "Maths",
-            8: "Police/Military"
+            8: "Police or Military"
         }),
         parse: (inp, prof) => {
             prof.pref.career = inp

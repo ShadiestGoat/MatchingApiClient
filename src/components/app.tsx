@@ -7,10 +7,14 @@ import { questionsHere } from './additionalQs';
 import axios from 'axios';
 import { roundPercent } from '../tools';
 
-export const Version = "1.5.0"
+// Ik its kinda not standard but major version (1st number) only changed when 'major' (subjective) changes are made to the api (eg. a rewrite of the profile)
+// Second number is backwards breaking stuff
+// Third is bug fixes
+// From now on, it will stay consistent!
+export const Version = "1.5.1"
 
 const App: FunctionalComponent = () => {
-    if (localStorage.getItem("v") != Version) {
+    if (localStorage.getItem("v")?.split('.').slice(0, 2).join(".") != Version.split('.').slice(0, 2).join(".")) {
         localStorage.removeItem("profile")
         localStorage.setItem("v", Version)
     }
