@@ -111,10 +111,10 @@ const Question:FunctionComponent<{
             <button disabled={last} onClick={() => chang(true)} className="col btn btn-p"> Next </button>
         </div>
         <h4 style={{
-            position: "abosulte",
-            top: "98vh",
-            left: "96vw"
-        }}>{Version}</h4>
+            position: "absolute",
+            right: "1vw",
+            bottom: "1vh"
+        }}>{`V${Version}`}</h4>
     </div>
 })
 
