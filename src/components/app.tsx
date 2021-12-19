@@ -1,6 +1,6 @@
 import { FunctionalComponent } from 'preact';
 import Router from 'preact-router';
-import Questionair from './questions';
+import Questionair from './Questions';
 
 // Ik its kinda not standard but major version (1st number) only changed when 'major' (subjective) changes are made to the api (eg. a rewrite of the profile)
 // Second number is backwards breaking stuff

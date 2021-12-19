@@ -1,4 +1,4 @@
-import { coords } from "./questions/questionair"
+import { coords } from "./Questions/questionair"
 
 export type infpRes = "IO" | "SI" | "FT" | "JP"
 
