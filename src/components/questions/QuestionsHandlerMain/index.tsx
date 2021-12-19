@@ -1,10 +1,10 @@
 import { FunctionComponent, Fragment } from "preact";
 import { useCallback } from "preact/hooks";
 import { useState } from "react";
-import { useGlobalListener } from "../../tools";
-import { Version } from "../app";
-import { profile } from "../profile";
-import { allQuestions } from "../questionair";
+import { useGlobalListener } from "../../../tools";
+import { Version } from "../../app";
+import { profile } from "../../profile";
+import { allQuestions } from "../../questionair";
 import CheckboxQuestion from "../QuestionsHandlers/CheckboxQuestion";
 import GraphQuestion from "../QuestionsHandlers/GraphQuestion";
 import InputQuestion from "../QuestionsHandlers/InputQuestion";

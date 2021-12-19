@@ -1,4 +1,4 @@
-import { coords } from "./questionair"
+import { coords } from "./questions/questionair"
 
 export type infpRes = "IO" | "SI" | "FT" | "JP"
 
@@ -127,7 +127,7 @@ export type profile = {
             okWithOpposite: boolean
         },
         intoForeplay: number,
-        ratings: Record<string, Record<string, number> & {char: profileCoords}>
+        ratings: Record<string, Record<string, unknown> & {char: profileCoords}>
         politicalCompass: string,
         bdsm: string,
         infp: string,

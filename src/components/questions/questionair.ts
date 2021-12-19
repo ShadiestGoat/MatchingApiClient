@@ -1,4 +1,4 @@
-import { annoying, infpRes, looks, looksFace, majorMatch, personality, profile, traits, gender, profileCoordsToCoords, coordsToProfileC, sexualCompatability, Gender, Subject } from "./profile"
+import { annoying, infpRes, looks, looksFace, majorMatch, personality, profile, traits, gender, profileCoordsToCoords, coordsToProfileC, sexualCompatability, Gender, Subject } from "../profile"
 
 type baseQuestion<T> = {
     question: string,

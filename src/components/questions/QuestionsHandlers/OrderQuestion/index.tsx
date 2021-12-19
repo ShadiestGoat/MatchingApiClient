@@ -3,7 +3,7 @@ import { useCallback } from "preact/hooks";
 import { JSXInternal } from "preact/src/jsx";
 import { ReactElement, useState } from "react";
 import { DragDropContext, Draggable, Droppable } from "react-beautiful-dnd";
-import { useGlobalListener } from "../../../tools";
+import { useGlobalListener } from "../../../../tools";
 
 const OrderQuestion:FunctionComponent<{
     dataInit: (string | number)[],

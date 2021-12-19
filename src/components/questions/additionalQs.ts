@@ -1,4 +1,4 @@
-import { coordsToProfileC, profileCoordsToCoords } from "./profile";
+import { coordsToProfileC, profileCoordsToCoords } from "../profile";
 import { question } from "./questionair";
 
 export const questionsHere:Record<string, question[]> = {
@@ -126,7 +126,6 @@ export const questionsHere:Record<string, question[]> = {
                 }
             },
             parse: (inp, prof) => {
-                // @ts-ignore
                 if (!prof.data.ratings.dan) prof.data.ratings.dan = {char: [0.5, 0.5]}
                 prof.data.ratings.dan.char = coordsToProfileC(inp)
                 return prof
@@ -264,7 +263,6 @@ export const questionsHere:Record<string, question[]> = {
                 }
             },
             parse: (inp, prof) => {
-                // @ts-ignore
                 if (!prof.data.ratings.zekuan) prof.data.ratings.zekuan = {char: [0, 0]}
                 prof.data.ratings.zekuan.char = coordsToProfileC(inp)
                 return prof
@@ -292,7 +290,6 @@ export const questionsHere:Record<string, question[]> = {
                 }
             },
             parse: (inp, prof) => {
-                // @ts-ignore
                 if (!prof.data.ratings.zengyi) prof.data.ratings.zengyi = {char: [0.5, 0.5]}
                 prof.data.ratings.zengyi.char = coordsToProfileC(inp)
                 return prof
@@ -430,7 +427,6 @@ export const questionsHere:Record<string, question[]> = {
                 }
             },
             parse: (inp, prof) => {
-                // @ts-ignore
                 if (!prof.data.ratings.matao) prof.data.ratings.matao = {char: [0.5, 0.5]}
                 prof.data.ratings.matao.char = coordsToProfileC(inp)
                 return prof
@@ -534,7 +530,6 @@ export const questionsHere:Record<string, question[]> = {
                 }
             },
             parse: (inp, prof) => {
-                // @ts-ignore
                 if (!prof.data.ratings.rayaan) prof.data.ratings.rayaan = {char: [0.5, 0.5]}
                 prof.data.ratings.rayaan.char = coordsToProfileC(inp)
                 return prof
@@ -678,7 +673,6 @@ export const questionsHere:Record<string, question[]> = {
                 }
             },
             parse: (inp, prof) => {
-                // @ts-ignore
                 if (!prof.data.ratings.bruna) prof.data.ratings.bruna = {char: [0.5, 0.5]}
                 prof.data.ratings.bruna.char = coordsToProfileC(inp)
                 return prof
@@ -692,32 +686,4 @@ export const questionsHere:Record<string, question[]> = {
             sub: "ratings"
         },
     ],
-    // Crazy Sex man 69
-    hu9asdioj: [
-        {
-            question: "What is the character alignment of Dan?",
-            type: "graph",
-            labels: {
-                inside: [],
-                outside: {
-                    top: ["Lawful Good", "Neutral Good", "Chaotic Good"],
-                    middle: ["Lawful Neutral", "", "Chaotic Neutral"],
-                    bottom: ["Lawful Evil", "Neutral Evil", "Chaotic Evil"]
-                }
-            },
-            parse: (inp, prof) => {
-                // @ts-ignore
-                if (!prof.data.ratings.dan) prof.data.ratings.dan = {char: [0.5, 0.5]}
-                prof.data.ratings.dan.char = coordsToProfileC(inp)
-                return prof
-            },
-            skipQuestion: () => false,
-            values: (prof) => profileCoordsToCoords(prof.data.ratings.dan?.char ?? [
-                0.5,
-                0.5
-            ]),
-            major: "data",
-            sub: "ratings"
-        },
-    ]
 }
