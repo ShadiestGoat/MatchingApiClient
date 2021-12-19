@@ -4,7 +4,7 @@ import { useState } from "react";
 import { useGlobalListener } from "../../../tools";
 import { Version } from "../../app";
 import { profile } from "../../profile";
-import { allQuestions } from "../../questionair";
+import { allQuestions } from "../questionair";
 import CheckboxQuestion from "../QuestionsHandlers/CheckboxQuestion";
 import GraphQuestion from "../QuestionsHandlers/GraphQuestion";
 import InputQuestion from "../QuestionsHandlers/InputQuestion";
