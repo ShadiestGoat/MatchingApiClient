@@ -6,7 +6,7 @@ import Questionair from './Questions';
 // Second number is backwards breaking stuff
 // Third is bug fixes
 // From now on, it will stay consistent!
-export const Version = "1.5.2"
+export const Version = "2.0.0"
 
 const App: FunctionalComponent = () => {
 
