@@ -1,5 +1,6 @@
 import { FunctionalComponent } from 'preact';
 import Router from 'preact-router';
+import Dashboard from './Dashboard';
 import Questionair from './Questions';
 
 // Ik its kinda not standard but major version (1st number) only changed when 'major' (subjective) changes are made to the api (eg. a rewrite of the profile)
@@ -14,6 +15,7 @@ const App: FunctionalComponent = () => {
     return (
         <Router>
             <Questionair path="/q/:name" />
+            <Dashboard path="/dash" />
         </Router>
     );
 };
