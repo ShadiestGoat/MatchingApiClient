@@ -711,5 +711,63 @@ export const questionsHere:Record<string, question[]> = {
             major: "data",
             sub: "ratings"
         },
+    ],
+    paigdnisao: [
+
+    ],
+    charlmaniok: [
+
+    ],
+    afosuidsioadios: [
+        {
+            question: "What is the character alignment of Adrian?",
+            type: "graph",
+            labels: {
+                inside: [],
+                outside: {
+                    top: ["Lawful Good", "Neutral Good", "Chaotic Good"],
+                    middle: ["Lawful Neutral", "", "Chaotic Neutral"],
+                    bottom: ["Lawful Evil", "Neutral Evil", "Chaotic Evil"]
+                }
+            },
+            parse: (inp, prof) => {
+                if (!prof.data.ratings.adrian) prof.data.ratings.adrian = {char: [0.5, 0.5]}
+                prof.data.ratings.adrian.char = coordsToProfileC(inp)
+                return prof
+            },
+            skipQuestion: () => false,
+            values: (prof) => profileCoordsToCoords(prof.data.ratings.adrian?.char ?? [
+                0.5,
+                0.5
+            ]),
+            major: "data",
+            sub: "ratings"
+        },
+    ],
+    addsjakdksaldsa: [
+        {
+            question: "What is the character alignment of Afonnso?",
+            type: "graph",
+            labels: {
+                inside: [],
+                outside: {
+                    top: ["Lawful Good", "Neutral Good", "Chaotic Good"],
+                    middle: ["Lawful Neutral", "", "Chaotic Neutral"],
+                    bottom: ["Lawful Evil", "Neutral Evil", "Chaotic Evil"]
+                }
+            },
+            parse: (inp, prof) => {
+                if (!prof.data.ratings.afonso) prof.data.ratings.afonso = {char: [0.5, 0.5]}
+                prof.data.ratings.afonso.char = coordsToProfileC(inp)
+                return prof
+            },
+            skipQuestion: () => false,
+            values: (prof) => profileCoordsToCoords(prof.data.ratings.afonso?.char ?? [
+                0.5,
+                0.5
+            ]),
+            major: "data",
+            sub: "ratings"
+        },
     ]
 }
